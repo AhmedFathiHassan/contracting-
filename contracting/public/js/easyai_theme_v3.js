@@ -78,13 +78,11 @@
 
 	function mountBrand() {
 		document.documentElement.classList.add("easyai-theme");
-		if (/ERPNext|Frappe/i.test(document.title)) {
-			document.title = document.title.replace(/ERPNext|Frappe/gi, "EasyAi");
-		}
+		document.title = document.title.replace(/ERPNext|Frappe/gi, "EasyAi");
 
 		const navbarBrand = document.querySelector(".navbar .navbar-brand, .navbar .navbar-home");
 		if (navbarBrand && !navbarBrand.querySelector(".easyai-brand")) {
-			navbarBrand.insertAdjacentHTML("beforeend", brandMarkup());
+			navbarBrand.innerHTML = brandMarkup();
 		}
 
 		const loginHead = document.querySelector(".login-content .page-card-head, .page-card-head");
@@ -94,6 +92,52 @@
 				`${brandMarkup("easyai-login-brand")}<p class="easyai-login-subtitle">Simple business management, built for your team.</p>`
 			);
 		}
+	}
+
+	function applyWhiteLabel() {
+		const blockedParents = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "CODE", "PRE"]);
+		const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+		const nodes = [];
+		let node;
+		while ((node = walker.nextNode())) nodes.push(node);
+
+		nodes.forEach((textNode) => {
+			if (!textNode.parentElement || blockedParents.has(textNode.parentElement.tagName)) return;
+			if (/ERPNext|Frappe/i.test(textNode.nodeValue)) {
+				textNode.nodeValue = textNode.nodeValue.replace(/ERPNext|Frappe/gi, "EasyAi");
+			}
+		});
+
+		document.querySelectorAll("[title], [aria-label], [placeholder]").forEach((element) => {
+			["title", "aria-label", "placeholder"].forEach((attribute) => {
+				const value = element.getAttribute(attribute);
+				if (value && /ERPNext|Frappe/i.test(value)) {
+					element.setAttribute(attribute, value.replace(/ERPNext|Frappe/gi, "EasyAi"));
+				}
+			});
+		});
+
+		const loginTitle = document.querySelector(".login-content .page-card-head h4, .for-login .page-card-head h4");
+		if (loginTitle) loginTitle.textContent = currentLanguage() === "ar" ? "تسجيل الدخول إلى EasyAi" : "Welcome to EasyAi";
+
+		const homeTitle = document.querySelector(".workspace-container .page-title .title-text");
+		if (homeTitle && homeTitle.textContent.trim() === "Home") {
+			homeTitle.textContent = currentLanguage() === "ar" ? "الرئيسية" : "EasyAi Home";
+		}
+
+		document.querySelectorAll(".dropdown-menu li, .dropdown-menu a").forEach((item) => {
+			if (/Documentation|Frappe Support|ERPNext Support/i.test(item.textContent)) {
+				item.closest("li")?.classList.add("easyai-hidden-vendor-link");
+			}
+		});
+
+		let favicon = document.querySelector('link[rel="icon"]');
+		if (!favicon) {
+			favicon = document.createElement("link");
+			favicon.rel = "icon";
+			document.head.appendChild(favicon);
+		}
+		favicon.href = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#f97316"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="white">EA</text></svg>');
 	}
 
 	function controlsMarkup() {
@@ -187,6 +231,7 @@
 
 	function applyEasyAi() {
 		mountBrand();
+		applyWhiteLabel();
 		mountControls();
 		mountWorkspaceHero();
 	}
