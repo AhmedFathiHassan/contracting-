@@ -13,12 +13,12 @@ app_license = "MIT"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/contracting/css/contracting.css"
-# app_include_js = "/assets/contracting/js/contracting.js"
+app_include_css = "/assets/contracting/css/easyai_theme.css"
+app_include_js = "/assets/contracting/js/easyai_theme.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/contracting/css/contracting.css"
-# web_include_js = "/assets/contracting/js/contracting.js"
+web_include_css = "/assets/contracting/css/easyai_theme.css"
+web_include_js = "/assets/contracting/js/easyai_theme.js"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "contracting/public/scss/website"
@@ -222,4 +222,3 @@ user_data_fields = [
 # auth_hooks = [
 #	"contracting.auth.validate"
 # ]
-

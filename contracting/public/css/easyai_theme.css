@@ -1,0 +1,206 @@
+/* EasyAi theme for Frappe / ERPNext v15 */
+:root,
+[data-theme="light"] {
+	--easyai-orange: #f97316;
+	--easyai-orange-dark: #c2410c;
+	--easyai-orange-soft: #fff7ed;
+	--easyai-ink: #20232a;
+	--easyai-muted: #667085;
+	--easyai-border: #fed7aa;
+	--primary: var(--easyai-orange);
+	--primary-color: var(--easyai-orange);
+	--btn-primary: var(--easyai-orange);
+	--blue-500: var(--easyai-orange);
+	--blue-600: var(--easyai-orange-dark);
+	--navbar-bg: #ffffff;
+}
+
+body {
+	background: #f8fafc;
+	color: var(--easyai-ink);
+}
+
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0 0 auto 0;
+	height: 3px;
+	background: linear-gradient(90deg, #fb923c, var(--easyai-orange), #ea580c);
+	z-index: 2001;
+}
+
+.easyai-brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 1px;
+	font-size: 21px;
+	font-weight: 800;
+	letter-spacing: -0.8px;
+	color: var(--easyai-ink);
+	white-space: nowrap;
+}
+
+.easyai-brand__ai {
+	color: var(--easyai-orange);
+}
+
+.easyai-brand__dot {
+	width: 7px;
+	height: 7px;
+	margin-left: 2px;
+	border-radius: 50%;
+	background: var(--easyai-orange);
+	box-shadow: 0 0 0 4px rgb(249 115 22 / 14%);
+}
+
+.navbar,
+.desk-navbar {
+	background: rgb(255 255 255 / 94%) !important;
+	border-bottom: 1px solid #f1f5f9 !important;
+	box-shadow: 0 1px 12px rgb(15 23 42 / 5%);
+	backdrop-filter: blur(12px);
+}
+
+.navbar .navbar-brand .app-logo,
+.navbar .navbar-brand .logo,
+.navbar .navbar-home img {
+	display: none !important;
+}
+
+.layout-side-section {
+	background: #ffffff;
+	border-right: 1px solid #f1f5f9;
+}
+
+.standard-sidebar-item,
+.desk-sidebar-item {
+	margin: 3px 8px;
+	border-radius: 10px;
+	transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.standard-sidebar-item:hover,
+.desk-sidebar-item:hover {
+	background: var(--easyai-orange-soft) !important;
+	color: var(--easyai-orange-dark) !important;
+	transform: translateX(2px);
+}
+
+.standard-sidebar-item.selected,
+.desk-sidebar-item.selected,
+.standard-sidebar-item.active {
+	background: linear-gradient(135deg, #ffedd5, #fff7ed) !important;
+	color: var(--easyai-orange-dark) !important;
+	font-weight: 650;
+}
+
+.page-head {
+	background: rgb(248 250 252 / 92%);
+	border-bottom: 1px solid #f1f5f9;
+	backdrop-filter: blur(10px);
+}
+
+.page-title .title-text,
+.page-title .title-text a {
+	font-weight: 750;
+	letter-spacing: -0.35px;
+}
+
+.widget,
+.card,
+.form-dashboard-section,
+.form-section.card-section,
+.frappe-card,
+.list-row-container {
+	border: 1px solid #eef2f6 !important;
+	border-radius: 14px !important;
+	box-shadow: 0 5px 20px rgb(15 23 42 / 4%) !important;
+}
+
+.widget:hover,
+.shortcut-widget-box:hover {
+	border-color: var(--easyai-border) !important;
+	box-shadow: 0 9px 26px rgb(249 115 22 / 10%) !important;
+}
+
+.widget.shortcut-widget-box .widget-head .widget-title i,
+.widget.shortcut-widget-box .widget-head .widget-title svg,
+.widget.links-widget-box .link-item .link-content .link-text {
+	color: var(--easyai-orange-dark);
+}
+
+.btn-primary,
+.btn-primary-dark,
+.btn[data-label="Save"] {
+	background: linear-gradient(135deg, #fb923c, var(--easyai-orange)) !important;
+	border-color: var(--easyai-orange) !important;
+	box-shadow: 0 4px 12px rgb(249 115 22 / 22%);
+}
+
+.btn-primary:hover,
+.btn-primary-dark:hover {
+	background: linear-gradient(135deg, var(--easyai-orange), var(--easyai-orange-dark)) !important;
+	border-color: var(--easyai-orange-dark) !important;
+}
+
+.indicator-pill.orange,
+.indicator.orange::before,
+.indicator-pill.blue,
+.indicator.blue::before {
+	background: var(--easyai-orange-soft) !important;
+	color: var(--easyai-orange-dark) !important;
+}
+
+.form-control:focus,
+.input-with-feedback:focus,
+.awesomplete > input:focus {
+	border-color: #fb923c !important;
+	box-shadow: 0 0 0 3px rgb(249 115 22 / 13%) !important;
+}
+
+.page-card,
+.login-content .page-card {
+	border: 1px solid #ffedd5 !important;
+	border-radius: 20px !important;
+	box-shadow: 0 22px 55px rgb(124 45 18 / 12%) !important;
+}
+
+.for-login,
+.for-forgot,
+.for-signup,
+.for-login-with-email-link {
+	background:
+		radial-gradient(circle at 15% 20%, rgb(251 146 60 / 18%), transparent 28rem),
+		radial-gradient(circle at 85% 80%, rgb(249 115 22 / 12%), transparent 26rem),
+		#fffaf5 !important;
+}
+
+.login-content .page-card-head img,
+.page-card-head .app-logo {
+	display: none !important;
+}
+
+.easyai-login-brand {
+	justify-content: center;
+	margin: 2px auto 14px;
+	font-size: 31px;
+}
+
+.easyai-login-subtitle {
+	margin: -5px 0 20px;
+	color: var(--easyai-muted);
+	font-size: 13px;
+	text-align: center;
+}
+
+@media (max-width: 767px) {
+	.easyai-brand {
+		font-size: 18px;
+	}
+
+	.widget,
+	.card,
+	.form-section.card-section {
+		border-radius: 11px !important;
+	}
+}
