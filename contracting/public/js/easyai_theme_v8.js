@@ -375,8 +375,15 @@
 			const activity = shell.querySelector("[data-activity-list]");
 			if (activity) {
 				const escape = (value) => frappe.utils?.escape_html ? frappe.utils.escape_html(String(value || "")) : String(value || "");
+				const activityTime = (value) => {
+					const date = new Date(String(value || "").replace(" ", "T"));
+					if (Number.isNaN(date.getTime())) return "";
+					return new Intl.DateTimeFormat(currentLanguage() === "ar" ? "ar" : "en", {
+						month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+					}).format(date);
+				};
 				activity.innerHTML = data.recent_activity?.length
-					? data.recent_activity.map((row) => `<button data-doctype="${escape(row.doctype)}" data-name="${escape(row.name)}"><span>${escape(row.label).slice(0, 1)}</span><div><strong>${escape(row.label)}</strong><small>${escape(row.name)}</small></div><time>${frappe.datetime?.comment_when ? escape(frappe.datetime.comment_when(row.modified)) : ""}</time></button>`).join("")
+					? data.recent_activity.map((row) => `<button data-doctype="${escape(row.doctype)}" data-name="${escape(row.name)}"><span>${escape(row.label).slice(0, 1)}</span><div><strong>${escape(row.label)}</strong><small>${escape(row.name)}</small></div><time>${escape(activityTime(row.modified))}</time></button>`).join("")
 					: `<div class="easyai-empty-activity">${currentLanguage() === "ar" ? "لا يوجد نشاط حديث" : "No recent activity yet"}</div>`;
 			}
 		} catch (error) {

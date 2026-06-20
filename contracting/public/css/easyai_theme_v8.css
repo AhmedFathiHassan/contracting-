@@ -1,4 +1,4 @@
-/* EasyAi v7 live-DOM corrected white-label system */
+/* EasyAi v8 verified white-label system */
 :root,
 [data-theme="light"] {
 	--easyai-orange: #f97316;
@@ -2759,4 +2759,30 @@ body::before {
 	.easyai-theme .layout-main-section .editor-js-container:has(.easyai-dashboard-shell) {
 		padding: 18px 10px 40px !important;
 	}
+}
+
+/* EasyAi v8 live visual polish */
+.easyai-kpi-card strong {
+	max-width: 100%;
+	overflow: hidden;
+	font-size: 18px !important;
+	line-height: 1.2;
+	text-overflow: ellipsis;
+}
+
+.easyai-theme .desk-sidebar .sidebar-item-icon svg,
+.easyai-theme .desk-sidebar .standard-sidebar-item svg {
+	--icon-stroke: #ff6500 !important;
+	color: #ff6500 !important;
+	stroke: #ff6500 !important;
+}
+
+.easyai-activity-list time {
+	max-width: 76px;
+	line-height: 1.25;
+	text-align: right;
+}
+
+[dir="rtl"] .easyai-activity-list time {
+	text-align: left;
 }
