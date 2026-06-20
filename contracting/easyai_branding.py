@@ -226,7 +226,8 @@ def install_branding():
 		print_style.print_style_name = style_name
 
 	print_style.disabled = 0
-	print_style.standard = 1
+	# Custom styles remain editable and can still be selected as the site default.
+	print_style.standard = 0
 	print_style.css = EASYAI_PRINT_CSS
 	print_style.save(ignore_permissions=True)
 
