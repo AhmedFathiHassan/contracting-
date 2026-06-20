@@ -21,6 +21,11 @@
 			projects: "View Projects",
 			newCustomer: "New Customer",
 			newQuotation: "New Quotation",
+			density: "Display density",
+			comfortable: "Comfortable",
+			compact: "Compact",
+			focus: "Focus mode",
+			focusHint: "Hide distractions",
 		},
 		ar: {
 			appearance: "المظهر",
@@ -32,6 +37,11 @@
 			projects: "عرض المشاريع",
 			newCustomer: "عميل جديد",
 			newQuotation: "عرض سعر جديد",
+			density: "كثافة العرض",
+			comfortable: "مريح",
+			compact: "مدمج",
+			focus: "وضع التركيز",
+			focusHint: "إخفاء المشتتات",
 		},
 	};
 
@@ -56,6 +66,24 @@
 		document.querySelectorAll(".easyai-color-option").forEach((button) => {
 			button.classList.toggle("is-active", button.dataset.color === safeColor);
 		});
+	}
+
+	function applyDensity(density) {
+		const safeDensity = density === "compact" ? "compact" : "comfortable";
+		document.documentElement.dataset.easyaiDensity = safeDensity;
+		localStorage.setItem("easyai-density", safeDensity);
+		document.querySelectorAll("[data-density]").forEach((button) => {
+			button.classList.toggle("is-active", button.dataset.density === safeDensity);
+		});
+	}
+
+	function toggleFocus(force) {
+		const active = typeof force === "boolean" ? force : !document.documentElement.classList.contains("easyai-focus");
+		document.documentElement.classList.toggle("easyai-focus", active);
+		localStorage.setItem("easyai-focus", active ? "1" : "0");
+		const button = document.querySelector("[data-easyai-focus]");
+		button?.classList.toggle("is-active", active);
+		button?.setAttribute("aria-pressed", String(active));
 	}
 
 	async function changeLanguage(language) {
@@ -143,6 +171,8 @@
 	function controlsMarkup() {
 		const text = copy();
 		const language = currentLanguage();
+		const density = localStorage.getItem("easyai-density") || "comfortable";
+		const focusActive = localStorage.getItem("easyai-focus") === "1";
 		return `
 			<div class="easyai-tools">
 				<button class="easyai-tool-button" type="button" data-easyai-panel-toggle aria-expanded="false">
@@ -158,6 +188,16 @@
 						<button type="button" class="easyai-language-option ${language === "en" ? "is-active" : ""}" data-language="en">English</button>
 						<button type="button" class="easyai-language-option ${language === "ar" ? "is-active" : ""}" data-language="ar">العربية</button>
 					</div>
+					<div class="easyai-preference-section">
+						<span class="easyai-preference-label">${text.density}</span>
+						<div class="easyai-density-options">
+							<button type="button" class="easyai-preference-button ${density === "comfortable" ? "is-active" : ""}" data-density="comfortable">${text.comfortable}</button>
+							<button type="button" class="easyai-preference-button ${density === "compact" ? "is-active" : ""}" data-density="compact">${text.compact}</button>
+						</div>
+						<button type="button" class="easyai-focus-button ${focusActive ? "is-active" : ""}" data-easyai-focus aria-pressed="${focusActive}">
+							<span><strong>${text.focus}</strong><small>${text.focusHint}</small></span><span class="easyai-switch"></span>
+						</button>
+					</div>
 				</div>
 			</div>`;
 	}
@@ -166,6 +206,8 @@
 		if (document.querySelector(".easyai-tools")) return;
 		document.body.insertAdjacentHTML("beforeend", controlsMarkup());
 		applyColor(localStorage.getItem(STORAGE_COLOR) || "orange");
+		applyDensity(localStorage.getItem("easyai-density") || "comfortable");
+		toggleFocus(localStorage.getItem("easyai-focus") === "1");
 
 		const tools = document.querySelector(".easyai-tools");
 		const panel = tools.querySelector(".easyai-theme-panel");
@@ -179,8 +221,19 @@
 		tools.addEventListener("click", (event) => {
 			const colorButton = event.target.closest("[data-color]");
 			const languageButton = event.target.closest("[data-language]");
+			const densityButton = event.target.closest("[data-density]");
+			const focusButton = event.target.closest("[data-easyai-focus]");
 			if (colorButton) applyColor(colorButton.dataset.color);
 			if (languageButton) changeLanguage(languageButton.dataset.language);
+			if (densityButton) applyDensity(densityButton.dataset.density);
+			if (focusButton) toggleFocus();
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === "f") {
+				event.preventDefault();
+				toggleFocus();
+			}
 		});
 
 		document.addEventListener("click", (event) => {
@@ -237,6 +290,8 @@
 	}
 
 	applyColor(localStorage.getItem(STORAGE_COLOR) || "orange");
+	applyDensity(localStorage.getItem("easyai-density") || "comfortable");
+	toggleFocus(localStorage.getItem("easyai-focus") === "1");
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", applyEasyAi, { once: true });
 	} else {
