@@ -387,7 +387,9 @@
 
 	function mountWorkspaceHero() {
 		if (!window.frappe || document.querySelector(".easyai-dashboard-shell")) return;
-		const workspace = document.querySelector(".layout-main-section .workspace-container, .workspace-container");
+		const workspace = document.querySelector(
+			".layout-main-section .workspace-container, .layout-main-section .editor-js-container, .workspace-container, .editor-js-container"
+		);
 		if (!workspace) return;
 		workspace.insertAdjacentHTML("afterbegin", workspaceHeroMarkup());
 		const shell = workspace.querySelector(".easyai-dashboard-shell");
