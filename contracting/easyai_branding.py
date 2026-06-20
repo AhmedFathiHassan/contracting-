@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import add_months, get_first_day, get_last_day, today
+from frappe.utils import add_months, get_first_day, get_last_day, getdate, today
 
 
 EASYAI_PRINT_CSS = r"""
@@ -266,7 +266,7 @@ def get_dashboard_data():
 			)
 			monthly_sales.append(
 				{
-					"month": month_date.strftime("%b"),
+					"month": getdate(month_date).strftime("%b"),
 					"total": rows[0].total if rows else 0,
 				}
 			)
