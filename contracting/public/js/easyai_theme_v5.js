@@ -26,6 +26,9 @@
 			compact: "Compact",
 			focus: "Focus mode",
 			focusHint: "Hide distractions",
+			quickAddItem: "Quick Add Item",
+			createItem: "Create a new item",
+			itemCreated: "Item created and added to the invoice",
 		},
 		ar: {
 			appearance: "المظهر",
@@ -42,6 +45,9 @@
 			compact: "مدمج",
 			focus: "وضع التركيز",
 			focusHint: "إخفاء المشتتات",
+			quickAddItem: "إضافة صنف سريعاً",
+			createItem: "إنشاء صنف جديد",
+			itemCreated: "تم إنشاء الصنف وإضافته إلى الفاتورة",
 		},
 	};
 
@@ -282,11 +288,103 @@
 		});
 	}
 
+	function openQuickItemDialog(frm) {
+		const text = copy();
+		const dialog = new frappe.ui.Dialog({
+			title: text.createItem,
+			size: "small",
+			fields: [
+				{ fieldname: "item_code", fieldtype: "Data", label: __("Item Code"), reqd: 1 },
+				{ fieldname: "item_name", fieldtype: "Data", label: __("Item Name") },
+				{ fieldtype: "Column Break" },
+				{ fieldname: "item_group", fieldtype: "Link", options: "Item Group", label: __("Item Group"), reqd: 1 },
+				{ fieldname: "stock_uom", fieldtype: "Link", options: "UOM", label: __("Stock UOM"), reqd: 1, default: "Nos" },
+				{ fieldtype: "Section Break" },
+				{ fieldname: "standard_rate", fieldtype: "Currency", label: __("Standard Selling Rate"), default: 0 },
+				{ fieldname: "is_stock_item", fieldtype: "Check", label: __("Maintain Stock"), default: 1 },
+			],
+			primary_action_label: __("Create and Add"),
+			primary_action: async (values) => {
+				dialog.disable_primary_action();
+				try {
+					const result = await frappe.call({
+						method: "frappe.client.insert",
+						args: {
+							doc: {
+								doctype: "Item",
+								item_code: values.item_code,
+								item_name: values.item_name || values.item_code,
+								item_group: values.item_group,
+								stock_uom: values.stock_uom,
+								standard_rate: values.standard_rate || 0,
+								is_stock_item: values.is_stock_item ? 1 : 0,
+							},
+						},
+						freeze: true,
+						freeze_message: __("Creating item..."),
+					});
+
+					const item = result.message;
+					const grid = frm.fields_dict.items.grid;
+					const targetRow = grid.grid_rows.find((row) => row.grid_form?.wrapper?.is(":visible"))
+						|| grid.grid_rows.find((row) => row.doc.__islocal && !row.doc.item_code);
+
+					if (targetRow) {
+						await frappe.model.set_value(targetRow.doc.doctype, targetRow.doc.name, "item_code", item.name);
+					} else {
+						const child = frm.add_child("items");
+						await frappe.model.set_value(child.doctype, child.name, "item_code", item.name);
+					}
+
+					frm.refresh_field("items");
+					dialog.hide();
+					frappe.show_alert({ message: text.itemCreated, indicator: "green" });
+				} catch (error) {
+					dialog.enable_primary_action();
+					throw error;
+				}
+			},
+		});
+
+		dialog.show();
+		dialog.get_field("item_code")?.set_focus();
+	}
+
+	function enhanceInvoiceItems() {
+		const frm = window.cur_frm;
+		if (!frm || !["Sales Invoice", "Purchase Invoice"].includes(frm.doctype)) return;
+		const grid = frm.fields_dict?.items?.grid;
+		if (!grid || grid.wrapper.find(".easyai-quick-item-button").length) return;
+		if (frappe.model?.can_create && !frappe.model.can_create("Item")) return;
+
+		const button = grid.add_custom_button(copy().quickAddItem, () => openQuickItemDialog(frm));
+		button?.addClass("easyai-quick-item-button");
+		grid.wrapper.find(".grid-add-row").addClass("easyai-grid-add-row");
+	}
+
+	function registerInvoiceEnhancements() {
+		if (!window.frappe?.ui?.form || window.__easyaiInvoiceEnhancementsRegistered) {
+			enhanceInvoiceItems();
+			return;
+		}
+
+		window.__easyaiInvoiceEnhancementsRegistered = true;
+		["Sales Invoice", "Purchase Invoice"].forEach((doctype) => {
+			frappe.ui.form.on(doctype, {
+				refresh: enhanceInvoiceItems,
+				onload_post_render: enhanceInvoiceItems,
+				items_on_form_rendered: enhanceInvoiceItems,
+			});
+		});
+		enhanceInvoiceItems();
+	}
+
 	function applyEasyAi() {
 		mountBrand();
 		applyWhiteLabel();
 		mountControls();
 		mountWorkspaceHero();
+		registerInvoiceEnhancements();
 	}
 
 	applyColor(localStorage.getItem(STORAGE_COLOR) || "orange");

@@ -1,4 +1,4 @@
-/* EasyAi v4 complete product design system */
+/* EasyAi v5 workflow and navigation refinement */
 :root,
 [data-theme="light"] {
 	--easyai-orange: #f97316;
@@ -766,7 +766,7 @@ body::before {
 
 /* Child tables */
 .easyai-theme .grid-field {
-	overflow: hidden;
+	overflow: visible;
 	border: 1px solid #e6ebf1;
 	border-radius: 13px;
 }
@@ -1562,5 +1562,355 @@ body::before {
 	.report-wrapper {
 		max-width: none !important;
 		padding: 0 !important;
+	}
+}
+
+/* EasyAi v5: invoice item search and quick creation */
+.easyai-theme .grid-field,
+.easyai-theme .grid-body,
+.easyai-theme .grid-row,
+.easyai-theme .data-row,
+.easyai-theme .grid-static-col,
+.easyai-theme .grid-input-row {
+	overflow: visible !important;
+}
+
+.easyai-theme .awesomplete {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.easyai-theme .awesomplete > ul {
+	z-index: 10060 !important;
+	min-width: max(100%, 310px);
+	max-width: min(520px, 82vw);
+	max-height: 330px;
+	margin-top: 6px;
+	padding: 7px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	border: 1px solid #dfe5ec !important;
+	border-radius: 14px !important;
+	background: rgb(255 255 255 / 98%) !important;
+	box-shadow: 0 22px 60px rgb(15 23 42 / 20%) !important;
+	backdrop-filter: blur(16px);
+}
+
+.easyai-theme .awesomplete > ul::before {
+	display: none !important;
+}
+
+.easyai-theme .awesomplete > ul > li {
+	margin: 2px 0;
+	padding: 10px 11px !important;
+	border: 0 !important;
+	border-radius: 10px;
+	background: transparent !important;
+	color: #344054 !important;
+	font-size: 12px;
+	line-height: 1.45;
+	cursor: pointer;
+}
+
+.easyai-theme .awesomplete > ul > li:hover,
+.easyai-theme .awesomplete > ul > li[aria-selected="true"] {
+	background: var(--easyai-orange-soft) !important;
+	color: var(--easyai-orange-dark) !important;
+}
+
+.easyai-theme .awesomplete > ul > li mark {
+	padding: 0;
+	border-radius: 3px;
+	background: rgb(var(--easyai-accent-rgb) / 15%);
+	color: var(--easyai-orange-dark);
+	font-weight: 780;
+}
+
+.easyai-theme .awesomplete > ul .link-option,
+.easyai-theme .awesomplete > ul .create-new,
+.easyai-theme .link-option {
+	margin-top: 5px !important;
+	padding-top: 9px !important;
+	border-top: 1px solid #edf0f4 !important;
+	color: var(--easyai-orange-dark) !important;
+	font-weight: 720;
+}
+
+.easyai-theme .grid-field .form-control:focus,
+.easyai-theme .grid-field .awesomplete > input:focus {
+	position: relative;
+	z-index: 2;
+	border-color: var(--easyai-orange) !important;
+	background: #ffffff !important;
+	box-shadow: 0 0 0 4px rgb(var(--easyai-accent-rgb) / 11%) !important;
+}
+
+.easyai-theme .easyai-quick-item-button {
+	border: 1px solid var(--easyai-border) !important;
+	border-radius: 9px !important;
+	background: var(--easyai-orange-soft) !important;
+	color: var(--easyai-orange-dark) !important;
+	font-weight: 720 !important;
+}
+
+.easyai-theme .easyai-quick-item-button::before {
+	content: "+";
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 17px;
+	height: 17px;
+	margin-right: 6px;
+	border-radius: 6px;
+	background: var(--easyai-orange);
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 800;
+}
+
+[dir="rtl"] .easyai-theme .easyai-quick-item-button::before {
+	margin-right: 0;
+	margin-left: 6px;
+}
+
+.easyai-theme .easyai-grid-add-row {
+	border-radius: 9px !important;
+	font-weight: 650;
+}
+
+.easyai-theme .modal-dialog .form-layout,
+.easyai-theme .modal-dialog .form-section {
+	padding: 0 !important;
+}
+
+/* EasyAi v5: wider SaaS navigation */
+@media (min-width: 992px) {
+	.easyai-theme .layout-side-section:has(.desk-sidebar),
+	.easyai-theme .workspace-sidebar,
+	.easyai-theme .desk-sidebar {
+		width: 284px !important;
+		min-width: 284px !important;
+		max-width: 284px !important;
+		flex: 0 0 284px !important;
+	}
+
+	.easyai-theme .desk-sidebar {
+		position: sticky;
+		top: 61px;
+		height: calc(100vh - 77px);
+		margin: 10px 10px 16px 14px;
+		padding: 16px 10px !important;
+		overflow-x: hidden;
+		overflow-y: auto;
+		border: 1px solid rgb(255 255 255 / 7%);
+		border-radius: 21px;
+		background:
+			radial-gradient(circle at 20% 0, rgb(var(--easyai-accent-rgb) / 22%), transparent 15rem),
+			linear-gradient(180deg, #172033, #101827 72%) !important;
+		box-shadow: 0 18px 42px rgb(15 23 42 / 18%);
+	}
+
+	.easyai-theme .desk-sidebar::-webkit-scrollbar {
+		width: 5px;
+	}
+
+	.easyai-theme .desk-sidebar::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.easyai-theme .desk-sidebar::-webkit-scrollbar-thumb {
+		border: 0;
+		background: rgb(255 255 255 / 18%);
+	}
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-label,
+.easyai-theme .desk-sidebar .sidebar-label,
+.easyai-theme .desk-sidebar .section-title {
+	margin: 17px 12px 7px;
+	color: #8491a7 !important;
+	font-size: 9px !important;
+	font-weight: 800 !important;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item,
+.easyai-theme .desk-sidebar .desk-sidebar-item {
+	position: relative;
+	min-height: 43px;
+	margin: 4px 0;
+	padding: 8px 11px !important;
+	border: 1px solid transparent;
+	border-radius: 12px;
+	color: #cbd5e1 !important;
+	font-size: 12px;
+	font-weight: 630;
+	letter-spacing: 0;
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item .sidebar-item-icon,
+.easyai-theme .desk-sidebar .desk-sidebar-item .sidebar-item-icon,
+.easyai-theme .desk-sidebar .standard-sidebar-item svg {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px !important;
+	height: 28px !important;
+	margin-right: 9px;
+	padding: 6px;
+	border-radius: 9px;
+	background: rgb(255 255 255 / 7%);
+	color: #cbd5e1 !important;
+}
+
+[dir="rtl"] .easyai-theme .desk-sidebar .standard-sidebar-item .sidebar-item-icon,
+[dir="rtl"] .easyai-theme .desk-sidebar .desk-sidebar-item .sidebar-item-icon,
+[dir="rtl"] .easyai-theme .desk-sidebar .standard-sidebar-item svg {
+	margin-right: 0;
+	margin-left: 9px;
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item:hover,
+.easyai-theme .desk-sidebar .desk-sidebar-item:hover {
+	border-color: rgb(255 255 255 / 7%);
+	background: rgb(255 255 255 / 7%) !important;
+	color: #ffffff !important;
+	transform: translateX(2px);
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item.selected,
+.easyai-theme .desk-sidebar .standard-sidebar-item.active,
+.easyai-theme .desk-sidebar .desk-sidebar-item.selected {
+	border-color: rgb(var(--easyai-accent-rgb) / 28%);
+	background: linear-gradient(100deg, rgb(var(--easyai-accent-rgb) / 28%), rgb(var(--easyai-accent-rgb) / 12%)) !important;
+	color: #ffffff !important;
+	font-weight: 740;
+	box-shadow: inset 3px 0 0 var(--easyai-orange);
+}
+
+[dir="rtl"] .easyai-theme .desk-sidebar .standard-sidebar-item.selected,
+[dir="rtl"] .easyai-theme .desk-sidebar .standard-sidebar-item.active,
+[dir="rtl"] .easyai-theme .desk-sidebar .desk-sidebar-item.selected {
+	box-shadow: inset -3px 0 0 var(--easyai-orange);
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item.selected .sidebar-item-icon,
+.easyai-theme .desk-sidebar .standard-sidebar-item.selected svg {
+	background: var(--easyai-orange);
+	color: #ffffff !important;
+}
+
+/* EasyAi v5: richer workspace hierarchy */
+.easyai-theme .workspace-container {
+	background:
+		radial-gradient(circle at 88% 4%, rgb(var(--easyai-accent-rgb) / 8%), transparent 24rem),
+		transparent;
+}
+
+.easyai-theme .workspace-container .widget-group-head {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	margin: 28px 0 12px;
+	padding: 0 2px 9px;
+	border-bottom: 1px solid #e6ebf0;
+}
+
+.easyai-theme .workspace-container .widget-group-head::before {
+	content: "";
+	width: 9px;
+	height: 9px;
+	border-radius: 4px;
+	background: var(--easyai-orange);
+	box-shadow: 0 0 0 5px rgb(var(--easyai-accent-rgb) / 11%);
+}
+
+.easyai-theme .workspace-container .widget-group-title {
+	color: #202939;
+	font-size: 15px !important;
+	font-weight: 800 !important;
+	letter-spacing: -0.35px;
+}
+
+.easyai-theme .workspace-container .widget {
+	border-top: 4px solid var(--easyai-card-accent, var(--easyai-orange)) !important;
+	background:
+		linear-gradient(145deg, rgb(255 255 255 / 100%), rgb(248 250 252 / 96%)) !important;
+}
+
+.easyai-theme .workspace-container .widget:nth-child(4n + 1) { --easyai-card-accent: var(--easyai-orange); }
+.easyai-theme .workspace-container .widget:nth-child(4n + 2) { --easyai-card-accent: #0ea5e9; }
+.easyai-theme .workspace-container .widget:nth-child(4n + 3) { --easyai-card-accent: #10b981; }
+.easyai-theme .workspace-container .widget:nth-child(4n + 4) { --easyai-card-accent: #8b5cf6; }
+
+.easyai-theme .workspace-container .widget .widget-title {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	font-size: 14px;
+}
+
+.easyai-theme .workspace-container .shortcut-widget-box {
+	min-height: 124px;
+}
+
+.easyai-theme .workspace-container .shortcut-widget-box .widget-head {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.easyai-theme .workspace-container .shortcut-widget-box .widget-title svg,
+.easyai-theme .workspace-container .shortcut-widget-box .widget-title .icon {
+	width: 43px !important;
+	height: 43px !important;
+	padding: 11px !important;
+	border-radius: 13px;
+	background: color-mix(in srgb, var(--easyai-card-accent) 13%, white);
+	color: var(--easyai-card-accent) !important;
+}
+
+.easyai-theme .workspace-container .number-card {
+	border-top-color: var(--easyai-orange) !important;
+}
+
+.easyai-theme .workspace-container .widget-control .btn,
+.easyai-theme .workspace-container .widget-control .btn-reset {
+	border-radius: 8px;
+	background: #f3f6fa;
+}
+
+@media (max-width: 991px) {
+	.easyai-theme .desk-sidebar {
+		width: min(86vw, 320px) !important;
+		padding: 13px 9px !important;
+		background: #111827 !important;
+	}
+}
+
+@media (max-width: 767px) {
+	.easyai-theme .awesomplete > ul {
+		position: fixed !important;
+		top: auto !important;
+		right: 10px !important;
+		bottom: 12px !important;
+		left: 10px !important;
+		width: auto !important;
+		min-width: 0;
+		max-width: none;
+		max-height: 48vh;
+		border-radius: 16px !important;
+	}
+
+	.easyai-theme .workspace-container .shortcut-widget-box {
+		min-height: 96px;
+	}
+
+	.easyai-theme .grid-buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
 	}
 }
