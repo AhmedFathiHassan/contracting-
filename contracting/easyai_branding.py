@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils import add_months, get_first_day, get_last_day, today
 
 
 EASYAI_PRINT_CSS = r"""
@@ -214,6 +215,104 @@ EASYAI_PRINT_CSS = r"""
 	}
 }
 """
+
+
+@frappe.whitelist()
+def get_dashboard_data():
+	"""Return permission-aware summary data for the EasyAi home dashboard."""
+	if frappe.session.user == "Guest":
+		frappe.throw("Login required", frappe.PermissionError)
+
+	def can_read(doctype):
+		return frappe.has_permission(doctype, "read")
+
+	def sum_field(doctype, fieldname):
+		if not can_read(doctype):
+			return 0
+		rows = frappe.get_list(
+			doctype,
+			fields=[f"SUM({fieldname}) AS total"],
+			filters={"docstatus": 1},
+			limit_page_length=1,
+		)
+		return rows[0].total if rows else 0
+
+	def permitted_count(doctype):
+		if not can_read(doctype):
+			return 0
+		rows = frappe.get_list(
+			doctype,
+			fields=["COUNT(name) AS total"],
+			limit_page_length=1,
+		)
+		return rows[0].total if rows else 0
+
+	sales_total = sum_field("Sales Invoice", "grand_total")
+	purchase_total = sum_field("Purchase Invoice", "grand_total")
+	currency = frappe.db.get_single_value("Global Defaults", "default_currency") or "USD"
+
+	monthly_sales = []
+	if can_read("Sales Invoice"):
+		for offset in range(5, -1, -1):
+			month_date = add_months(today(), -offset)
+			rows = frappe.get_list(
+				"Sales Invoice",
+				fields=["SUM(grand_total) AS total"],
+				filters={
+					"docstatus": 1,
+					"posting_date": ["between", [get_first_day(month_date), get_last_day(month_date)]],
+				},
+				limit_page_length=1,
+			)
+			monthly_sales.append(
+				{
+					"month": month_date.strftime("%b"),
+					"total": rows[0].total if rows else 0,
+				}
+			)
+
+	recent_activity = []
+	activity_sources = (
+		("Sales Invoice", "Invoice"),
+		("Purchase Order", "Purchase Order"),
+		("Customer", "Customer"),
+		("Project", "Project"),
+	)
+	for doctype, label in activity_sources:
+		if not can_read(doctype):
+			continue
+		try:
+			rows = frappe.get_list(
+				doctype,
+				fields=["name", "modified"],
+				order_by="modified desc",
+				limit_page_length=3,
+			)
+			for row in rows:
+				recent_activity.append(
+					{
+						"doctype": doctype,
+						"label": label,
+						"name": row.name,
+						"modified": row.modified,
+					}
+				)
+		except frappe.PermissionError:
+			continue
+
+	recent_activity.sort(key=lambda row: row["modified"], reverse=True)
+
+	return {
+		"currency": currency,
+		"metrics": {
+			"sales": sales_total,
+			"purchases": purchase_total,
+			"customers": permitted_count("Customer"),
+			"projects": permitted_count("Project"),
+		},
+		"monthly_sales": monthly_sales,
+		"recent_activity": recent_activity[:6],
+	}
 
 
 def install_branding():
