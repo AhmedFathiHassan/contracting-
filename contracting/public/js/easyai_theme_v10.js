@@ -159,7 +159,7 @@
 		if (document.querySelector(".easyai-sidebar-brand")) return;
 		document.body.insertAdjacentHTML(
 			"afterbegin",
-			`<div class="easyai-sidebar-brand" aria-label="EasyAi Business Suite"><span class="easyai-sidebar-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="13" fill="white"/><path d="M13 32.5 22.4 13h4.8L37 32.5h-6.2l-1.6-3.8H20l-1.6 3.8H13Zm9.1-8.8h5l-2.5-6.2-2.5 6.2Z" fill="#ff6500"/><circle cx="36.5" cy="13" r="3.5" fill="#ffb067"/></svg></span><span class="easyai-sidebar-wordmark"><strong>EasyAi</strong><small>Business Suite</small></span></div>`
+			`<a class="easyai-sidebar-brand" href="/app/home" aria-label="EasyAi Business Suite — Home" title="Go to Home"><span class="easyai-sidebar-logo"><svg viewBox="0 0 48 48" role="img" aria-label="EasyAi"><defs><linearGradient id="easyai-cube-top" x1="13" y1="12" x2="35" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#ff9a44"/><stop offset="1" stop-color="#ff6500"/></linearGradient></defs><rect x="2" y="2" width="44" height="44" rx="13" fill="white"/><path d="m24 10.5 11.5 6.6L24 23.8l-11.5-6.7L24 10.5Z" fill="url(#easyai-cube-top)"/><path d="m12.5 19.7 9.8 5.7v12.1l-9.8-5.7V19.7Z" fill="#ff6500"/><path d="m25.7 25.4 9.8-5.7v12.1l-9.8 5.7V25.4Z" fill="#e94f00"/><path d="M24 23.8v13.7" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity=".85"/><circle cx="37.2" cy="10.8" r="2.6" fill="#ffb067" stroke="white" stroke-width="1.4"/></svg></span><span class="easyai-sidebar-wordmark"><strong>EasyAi</strong><small>Business Suite</small></span></a>`
 		);
 	}
 

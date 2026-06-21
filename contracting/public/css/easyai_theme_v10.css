@@ -1685,6 +1685,33 @@ body::before {
 	}
 }
 
+/* EasyAi v12: professional home-linked brand */
+a.easyai-sidebar-brand {
+	color: #ffffff;
+	text-decoration: none !important;
+	cursor: pointer;
+	transition: background 180ms ease, box-shadow 180ms ease;
+}
+
+a.easyai-sidebar-brand:hover {
+	color: #ffffff;
+	background: linear-gradient(135deg, #ff850d 0%, #f45100 100%);
+	box-shadow: inset -1px 0 rgb(255 255 255 / 16%), 0 5px 20px rgb(166 55 0 / 12%);
+}
+
+a.easyai-sidebar-brand .easyai-sidebar-logo {
+	transition: transform 180ms ease;
+}
+
+a.easyai-sidebar-brand:hover .easyai-sidebar-logo {
+	transform: translateY(-1px) scale(1.035);
+}
+
+a.easyai-sidebar-brand:focus-visible {
+	outline: 3px solid rgb(255 255 255 / 72%);
+	outline-offset: -5px;
+}
+
 @media (max-width: 767px) {
 	.easyai-theme .workspace-container:has(.easyai-dashboard-shell) {
 		padding: 19px 11px 40px !important;
