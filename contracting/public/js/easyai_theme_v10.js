@@ -164,7 +164,7 @@
 		if (document.querySelector(".easyai-sidebar-brand")) return;
 		document.body.insertAdjacentHTML(
 			"afterbegin",
-			`<a class="easyai-sidebar-brand" href="/app/home" aria-label="EasyAi Business Suite — Home" title="Go to Home"><span class="easyai-sidebar-logo"><svg viewBox="0 0 48 48" role="img" aria-label="EasyAi"><defs><linearGradient id="easyai-cube-top" x1="13" y1="12" x2="35" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#ff9a44"/><stop offset="1" stop-color="#ff6500"/></linearGradient></defs><rect x="2" y="2" width="44" height="44" rx="13" fill="white"/><path d="m24 10.5 11.5 6.6L24 23.8l-11.5-6.7L24 10.5Z" fill="url(#easyai-cube-top)"/><path d="m12.5 19.7 9.8 5.7v12.1l-9.8-5.7V19.7Z" fill="#ff6500"/><path d="m25.7 25.4 9.8-5.7v12.1l-9.8 5.7V25.4Z" fill="#e94f00"/><path d="M24 23.8v13.7" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity=".85"/><circle cx="37.2" cy="10.8" r="2.6" fill="#ffb067" stroke="white" stroke-width="1.4"/></svg></span><span class="easyai-sidebar-wordmark"><strong>EasyAi</strong><small>Business Suite</small></span></a>`
+			`<a class="easyai-sidebar-brand" href="/app/home" aria-label="EasyAi Home" title="Go to Home"><span class="easyai-word-logo">Easy<span>Ai</span><i></i></span></a>`
 		);
 	}
 
@@ -198,6 +198,7 @@
 		}
 		const sections = EASYAI_NAV.map(([title, items]) => `<section class="easyai-app-nav__section is-open"><button class="easyai-app-nav__section-toggle" type="button" aria-expanded="true"><span>${title}</span><svg viewBox="0 0 20 20"><path d="m6 8 4 4 4-4"/></svg></button><div class="easyai-app-nav__items">${items.map(([label, route, icon]) => `<a class="easyai-app-nav__link" href="/app/${route}" data-route="${route.toLowerCase()}"><span class="easyai-app-nav__icon">${easyaiNavIcon(icon)}</span><span class="easyai-app-nav__label">${label}</span></a>`).join("")}</div></section>`).join("");
 		document.body.insertAdjacentHTML("afterbegin", `<aside class="easyai-app-sidebar" aria-label="Primary navigation"><nav class="easyai-app-nav">${sections}</nav><footer><div class="easyai-sidebar-preferences"><button class="easyai-sidebar-preference" type="button" data-easyai-sidebar-language><span class="easyai-sidebar-preference__icon">${currentLanguage() === "ar" ? "EN" : "AR"}</span><span>Language</span></button><button class="easyai-sidebar-preference" type="button" data-easyai-sidebar-theme aria-expanded="false"><span class="easyai-sidebar-color-dot"></span><span>Theme color</span></button><div class="easyai-sidebar-palette" hidden>${COLORS.map((color) => `<button type="button" data-easyai-sidebar-color="${color}" title="${COLOR_LABELS[color]}"><span style="--swatch:${{ orange: "#ff6500", ocean: "#0ea5e9", forest: "#10b981", violet: "#8b5cf6" }[color]}"></span>${COLOR_LABELS[color]}</button>`).join("")}</div></div><button type="button" data-easyai-sidebar-collapse aria-label="Collapse navigation">${easyaiNavIcon("M5 7h14M5 12h10M5 17h14")}<span>Collapse menu</span></button></footer></aside><button class="easyai-sidebar-scrim" type="button" aria-label="Close navigation"></button>`);
+		document.querySelector("[data-easyai-sidebar-language]")?.remove();
 		document.body.classList.add("easyai-nav-mounted");
 		document.documentElement.classList.toggle("easyai-sidebar-collapsed", localStorage.getItem("easyai-sidebar-collapsed") === "1");
 		const sidebar = document.querySelector(".easyai-app-sidebar");
@@ -295,7 +296,6 @@
 		return `
 			<div class="easyai-tools">
 				<button class="easyai-tool-button easyai-nav-trigger" type="button" data-easyai-mobile-navigation aria-label="Open navigation">${easyaiNavIcon("M5 7h14M5 12h14M5 17h14")}<span class="easyai-tool-button__label">Menu</span></button>
-				<button class="easyai-tool-button easyai-language-trigger" type="button" data-easyai-language-quick title="Switch language"><span class="easyai-language-symbol">${language === "ar" ? "EN" : "AR"}</span><span class="easyai-tool-button__label">${language === "ar" ? "English" : "Arabic"}</span></button>
 				<button class="easyai-tool-button" type="button" data-easyai-panel-toggle aria-expanded="false">
 					<span class="easyai-tool-dot"></span><span class="easyai-tool-button__label">${text.appearance}</span>
 				</button>
