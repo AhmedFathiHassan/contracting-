@@ -163,7 +163,59 @@
 		);
 	}
 
+	const EASYAI_NAV = [
+		["Overview", [["Home", "home", "M4 10.5 12 4l8 6.5V20H5v-9.5Z"]]],
+		["Operations", [["Selling", "selling", "M4 19V9m8 10V5m8 14v-7M3 19h18"], ["Buying", "buying", "M4 5h2l2 10h9l2-7H7m2 11h.01M17 19h.01"], ["Stock", "stock", "m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M12 12 4 7.5"]]],
+		["Finance", [["Accounting", "accounting", "M5 3h14v18H5V3Zm3 5h8m-8 4h3m2 0h3m-8 4h3m2 0h3"], ["Assets", "assets", "M5 8h14v11H5V8Zm3 0V5h8v3"]]],
+		["Work", [["Projects", "projects", "M4 7h6l2 2h8v10H4V7Z"], ["HR & Payroll", "hr", "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8 0v6m3-3h-6"], ["Support", "support", "M4 13v-2a8 8 0 0 1 16 0v2M4 13h3v6H4v-6Zm16 0h-3v6h3v-6Z"]]],
+		["Insights", [["Reports", "query-report/General-Ledger", "M5 20V10m5 10V4m5 16v-7m5 7V7"], ["Settings", "settings", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-5v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"]]],
+	];
+
+	function easyaiNavIcon(path) {
+		return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
+	}
+
+	function updateNavigationState() {
+		const path = decodeURIComponent(window.location.pathname).toLowerCase();
+		document.querySelectorAll(".easyai-app-nav__link").forEach((link) => {
+			const route = link.dataset.route;
+			const active = route === "home" ? /\/app\/?(home)?$/.test(path) : path.includes(route);
+			link.classList.toggle("is-active", active);
+			if (active) link.closest(".easyai-app-nav__section")?.classList.add("is-open");
+		});
+	}
+
+	function mountAppSidebar() {
+		if (window.frappe?.session?.user === "Guest" || !window.location.pathname.startsWith("/app")) return;
+		if (document.querySelector(".easyai-app-sidebar")) {
+			updateNavigationState();
+			return;
+		}
+		const sections = EASYAI_NAV.map(([title, items]) => `<section class="easyai-app-nav__section is-open"><button class="easyai-app-nav__section-toggle" type="button" aria-expanded="true"><span>${title}</span><svg viewBox="0 0 20 20"><path d="m6 8 4 4 4-4"/></svg></button><div class="easyai-app-nav__items">${items.map(([label, route, icon]) => `<a class="easyai-app-nav__link" href="/app/${route}" data-route="${route.toLowerCase()}"><span class="easyai-app-nav__icon">${easyaiNavIcon(icon)}</span><span class="easyai-app-nav__label">${label}</span></a>`).join("")}</div></section>`).join("");
+		document.body.insertAdjacentHTML("afterbegin", `<aside class="easyai-app-sidebar" aria-label="Primary navigation"><nav class="easyai-app-nav">${sections}</nav><footer><button type="button" data-easyai-sidebar-collapse aria-label="Collapse navigation">${easyaiNavIcon("M5 7h14M5 12h10M5 17h14")}<span>Collapse menu</span></button></footer></aside><button class="easyai-sidebar-scrim" type="button" aria-label="Close navigation"></button>`);
+		document.body.classList.add("easyai-nav-mounted");
+		document.documentElement.classList.toggle("easyai-sidebar-collapsed", localStorage.getItem("easyai-sidebar-collapsed") === "1");
+		const sidebar = document.querySelector(".easyai-app-sidebar");
+		sidebar.addEventListener("click", (event) => {
+			const sectionButton = event.target.closest(".easyai-app-nav__section-toggle");
+			if (sectionButton) {
+				const section = sectionButton.closest(".easyai-app-nav__section");
+				section.classList.toggle("is-open");
+				sectionButton.setAttribute("aria-expanded", String(section.classList.contains("is-open")));
+			}
+			if (event.target.closest(".easyai-app-nav__link")) document.documentElement.classList.remove("easyai-mobile-nav-open");
+			if (event.target.closest("[data-easyai-sidebar-collapse]")) {
+				const collapsed = !document.documentElement.classList.contains("easyai-sidebar-collapsed");
+				document.documentElement.classList.toggle("easyai-sidebar-collapsed", collapsed);
+				localStorage.setItem("easyai-sidebar-collapsed", collapsed ? "1" : "0");
+			}
+		});
+		document.querySelector(".easyai-sidebar-scrim")?.addEventListener("click", () => document.documentElement.classList.remove("easyai-mobile-nav-open"));
+		updateNavigationState();
+	}
+
 	function applyWhiteLabel() {
+		mountAppSidebar();
 		const blockedParents = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "CODE", "PRE"]);
 		const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 		const nodes = [];
@@ -224,6 +276,8 @@
 		const focusActive = localStorage.getItem("easyai-focus") === "1";
 		return `
 			<div class="easyai-tools">
+				<button class="easyai-tool-button easyai-nav-trigger" type="button" data-easyai-mobile-navigation aria-label="Open navigation">${easyaiNavIcon("M5 7h14M5 12h14M5 17h14")}<span class="easyai-tool-button__label">Menu</span></button>
+				<button class="easyai-tool-button easyai-language-trigger" type="button" data-easyai-language-quick title="Switch language"><span class="easyai-language-symbol">${language === "ar" ? "EN" : "AR"}</span><span class="easyai-tool-button__label">${language === "ar" ? "English" : "Arabic"}</span></button>
 				<button class="easyai-tool-button" type="button" data-easyai-panel-toggle aria-expanded="false">
 					<span class="easyai-tool-dot"></span><span class="easyai-tool-button__label">${text.appearance}</span>
 				</button>
@@ -272,10 +326,14 @@
 			const languageButton = event.target.closest("[data-language]");
 			const densityButton = event.target.closest("[data-density]");
 			const focusButton = event.target.closest("[data-easyai-focus]");
+			const quickLanguage = event.target.closest("[data-easyai-language-quick]");
+			const navigationButton = event.target.closest("[data-easyai-mobile-navigation]");
 			if (colorButton) applyColor(colorButton.dataset.color);
 			if (languageButton) changeLanguage(languageButton.dataset.language);
 			if (densityButton) applyDensity(densityButton.dataset.density);
 			if (focusButton) toggleFocus();
+			if (quickLanguage) changeLanguage(currentLanguage() === "ar" ? "en" : "ar");
+			if (navigationButton) document.documentElement.classList.toggle("easyai-mobile-nav-open");
 		});
 
 		document.addEventListener("keydown", (event) => {
