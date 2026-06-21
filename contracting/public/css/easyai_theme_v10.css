@@ -2968,3 +2968,91 @@ body::before {
 	border-right: 1px solid #f0dfd3;
 	border-left: 0;
 }
+
+/* EasyAi v11: compact, proportionate navigation shell */
+:root {
+	--easyai-shell-width: 238px;
+	--easyai-topbar-height: 64px;
+}
+
+.easyai-sidebar-brand {
+	box-sizing: border-box;
+	width: var(--easyai-shell-width);
+	height: var(--easyai-topbar-height);
+	gap: 10px;
+	padding: 0 17px;
+	background: linear-gradient(135deg, #ff7a00 0%, #ff5a00 100%);
+	box-shadow: inset -1px 0 rgb(255 255 255 / 12%);
+}
+
+.easyai-sidebar-logo,
+.easyai-sidebar-logo svg {
+	width: 36px;
+	height: 36px;
+}
+
+.easyai-sidebar-logo { flex-basis: 36px; }
+.easyai-sidebar-logo svg { filter: drop-shadow(0 3px 6px rgb(155 55 0 / 16%)); }
+
+.easyai-sidebar-wordmark strong {
+	font-size: 18px;
+	font-weight: 800;
+	letter-spacing: -0.45px;
+}
+
+.easyai-sidebar-wordmark small {
+	margin-top: 3px;
+	font-size: 7.5px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+}
+
+@media (min-width: 992px) {
+	.easyai-theme .list-sidebar.overlay-sidebar,
+	.easyai-theme .desk-sidebar {
+		box-sizing: border-box;
+		padding: 14px 10px 22px !important;
+	}
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-label,
+.easyai-theme .desk-sidebar .sidebar-label,
+.easyai-theme .desk-sidebar .section-title {
+	margin: 14px 10px 6px;
+	font-size: 8px !important;
+	letter-spacing: 0.13em;
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item,
+.easyai-theme .desk-sidebar .desk-sidebar-item {
+	min-height: 42px;
+	margin: 2px 0;
+	padding: 6px 9px !important;
+	border-radius: 10px;
+	font-size: 12.5px;
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item .sidebar-item-icon,
+.easyai-theme .desk-sidebar .desk-sidebar-item .sidebar-item-icon {
+	width: 28px !important;
+	height: 28px !important;
+	margin-right: 8px;
+	padding: 6px;
+	border-radius: 9px;
+}
+
+[dir="rtl"] .easyai-theme .desk-sidebar .standard-sidebar-item .sidebar-item-icon,
+[dir="rtl"] .easyai-theme .desk-sidebar .desk-sidebar-item .sidebar-item-icon {
+	margin-right: 0;
+	margin-left: 8px;
+}
+
+@media (max-width: 991px) {
+	.easyai-sidebar-brand { display: none; }
+	.easyai-theme .desk-sidebar,
+	.easyai-theme .list-sidebar.overlay-sidebar {
+		width: min(82vw, 284px) !important;
+		min-width: min(82vw, 284px) !important;
+		max-width: min(82vw, 284px) !important;
+	}
+}
