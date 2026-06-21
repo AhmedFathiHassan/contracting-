@@ -3611,3 +3611,187 @@ html.easyai-sidebar-collapsed {
 		max-width: min(82vw, 284px) !important;
 	}
 }
+
+
+/* EasyAi v14: always-visible language and color controls */
+html[data-easyai-color="orange"] {
+	--easyai-orange: #ff6500;
+	--easyai-orange-dark: #d94f00;
+	--easyai-orange-soft: #fff3eb;
+	--easyai-accent-rgb: 255 101 0;
+	--primary: #ff6500;
+	--primary-color: #ff6500;
+	--btn-primary: #ff6500;
+}
+
+html[data-easyai-color="orange"] .easyai-app-sidebar {
+	background: linear-gradient(180deg, #ffffff 0%, #fffdfb 72%, #fff8f3 100%);
+}
+
+html[data-easyai-color="orange"] .easyai-dashboard-header,
+html[data-easyai-color="orange"] .easyai-kpi-card,
+html[data-easyai-color="orange"] .easyai-analytics-card,
+html[data-easyai-color="orange"] .easyai-dashboard-panel {
+	border-color: #f0e7e1;
+}
+
+.easyai-theme .easyai-tools,
+.easyai-focus .easyai-tools {
+	position: fixed !important;
+	top: 12px !important;
+	right: 150px !important;
+	z-index: 5000 !important;
+	display: flex !important;
+	opacity: 1 !important;
+	visibility: visible !important;
+	pointer-events: auto !important;
+}
+
+[dir="rtl"] .easyai-theme .easyai-tools,
+[dir="rtl"] .easyai-focus .easyai-tools {
+	right: auto !important;
+	left: 150px !important;
+}
+
+.easyai-app-sidebar footer {
+	position: relative;
+	display: grid;
+	gap: 8px;
+}
+
+.easyai-sidebar-preferences {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 7px;
+}
+
+.easyai-app-sidebar footer .easyai-sidebar-preference {
+	display: flex;
+	height: 48px;
+	flex-direction: column;
+	justify-content: center;
+	gap: 4px;
+	padding: 5px;
+	border: 1px solid #ebeef2;
+	background: #ffffff;
+	color: #555e6d;
+	font-size: 9px;
+	font-weight: 720;
+	text-align: center;
+}
+
+.easyai-app-sidebar footer .easyai-sidebar-preference:hover,
+.easyai-app-sidebar footer .easyai-sidebar-preference[aria-expanded="true"] {
+	border-color: rgb(var(--easyai-accent-rgb) / 25%);
+	background: rgb(var(--easyai-accent-rgb) / 8%);
+	color: var(--easyai-orange-dark);
+}
+
+.easyai-sidebar-preference__icon {
+	display: grid;
+	min-width: 25px;
+	height: 22px;
+	place-items: center;
+	border-radius: 7px;
+	background: rgb(var(--easyai-accent-rgb) / 11%);
+	color: var(--easyai-orange-dark);
+	font-size: 9px;
+	font-weight: 850;
+}
+
+.easyai-sidebar-color-dot {
+	width: 18px;
+	height: 18px;
+	border: 4px solid #ffffff;
+	border-radius: 50%;
+	background: var(--easyai-orange);
+	box-shadow: 0 0 0 1px #dfe3e9, 0 2px 6px rgb(var(--easyai-accent-rgb) / 22%);
+}
+
+.easyai-sidebar-palette {
+	position: absolute;
+	right: 10px;
+	bottom: 106px;
+	left: 10px;
+	z-index: 20;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 6px;
+	padding: 9px;
+	border: 1px solid #e4e7ec;
+	border-radius: 12px;
+	background: #ffffff;
+	box-shadow: 0 16px 42px rgb(20 30 50 / 18%);
+}
+
+.easyai-sidebar-palette[hidden] {
+	display: none !important;
+}
+
+.easyai-app-sidebar footer .easyai-sidebar-palette button {
+	display: flex;
+	height: 34px;
+	justify-content: flex-start;
+	gap: 7px;
+	padding: 0 8px;
+	border: 1px solid transparent;
+	border-radius: 8px;
+	background: #f7f8fa;
+	color: #535b68;
+	font-size: 9px;
+}
+
+.easyai-app-sidebar footer .easyai-sidebar-palette button:hover {
+	border-color: #e0e3e8;
+	background: #ffffff;
+}
+
+.easyai-sidebar-palette button span {
+	width: 13px;
+	height: 13px;
+	flex: 0 0 13px;
+	border-radius: 50%;
+	background: var(--swatch);
+	box-shadow: inset 0 0 0 1px rgb(255 255 255 / 35%);
+}
+
+.easyai-sidebar-collapsed .easyai-sidebar-preferences {
+	grid-template-columns: 1fr;
+}
+
+.easyai-sidebar-collapsed .easyai-app-sidebar footer .easyai-sidebar-preference {
+	height: 37px;
+}
+
+.easyai-sidebar-collapsed .easyai-sidebar-preference > span:last-child {
+	display: none;
+}
+
+.easyai-sidebar-collapsed .easyai-sidebar-palette {
+	position: fixed;
+	right: auto;
+	bottom: 66px;
+	left: 68px;
+	width: 190px;
+}
+
+@media (max-width: 1199px) and (min-width: 992px) {
+	.easyai-theme .easyai-tools,
+	.easyai-focus .easyai-tools { right: 102px !important; }
+	[dir="rtl"] .easyai-theme .easyai-tools,
+	[dir="rtl"] .easyai-focus .easyai-tools { right: auto !important; left: 102px !important; }
+}
+
+@media (max-width: 991px) {
+	.easyai-theme .easyai-tools,
+	.easyai-focus .easyai-tools { top: 10px !important; right: 72px !important; }
+	[dir="rtl"] .easyai-theme .easyai-tools,
+	[dir="rtl"] .easyai-focus .easyai-tools { right: auto !important; left: 72px !important; }
+}
+
+@media (max-width: 575px) {
+	.easyai-theme .easyai-tools,
+	.easyai-focus .easyai-tools { right: 58px !important; }
+	[dir="rtl"] .easyai-theme .easyai-tools,
+	[dir="rtl"] .easyai-focus .easyai-tools { right: auto !important; left: 58px !important; }
+}

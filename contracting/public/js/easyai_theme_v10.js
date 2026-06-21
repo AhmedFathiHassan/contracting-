@@ -9,6 +9,11 @@
 		forest: "Forest",
 		violet: "Violet",
 	};
+	const EASYAI_THEME_REVISION = "14";
+	if (localStorage.getItem("easyai-theme-revision") !== EASYAI_THEME_REVISION) {
+		localStorage.setItem(STORAGE_COLOR, "orange");
+		localStorage.setItem("easyai-theme-revision", EASYAI_THEME_REVISION);
+	}
 
 	const translations = {
 		en: {
@@ -192,11 +197,24 @@
 			return;
 		}
 		const sections = EASYAI_NAV.map(([title, items]) => `<section class="easyai-app-nav__section is-open"><button class="easyai-app-nav__section-toggle" type="button" aria-expanded="true"><span>${title}</span><svg viewBox="0 0 20 20"><path d="m6 8 4 4 4-4"/></svg></button><div class="easyai-app-nav__items">${items.map(([label, route, icon]) => `<a class="easyai-app-nav__link" href="/app/${route}" data-route="${route.toLowerCase()}"><span class="easyai-app-nav__icon">${easyaiNavIcon(icon)}</span><span class="easyai-app-nav__label">${label}</span></a>`).join("")}</div></section>`).join("");
-		document.body.insertAdjacentHTML("afterbegin", `<aside class="easyai-app-sidebar" aria-label="Primary navigation"><nav class="easyai-app-nav">${sections}</nav><footer><button type="button" data-easyai-sidebar-collapse aria-label="Collapse navigation">${easyaiNavIcon("M5 7h14M5 12h10M5 17h14")}<span>Collapse menu</span></button></footer></aside><button class="easyai-sidebar-scrim" type="button" aria-label="Close navigation"></button>`);
+		document.body.insertAdjacentHTML("afterbegin", `<aside class="easyai-app-sidebar" aria-label="Primary navigation"><nav class="easyai-app-nav">${sections}</nav><footer><div class="easyai-sidebar-preferences"><button class="easyai-sidebar-preference" type="button" data-easyai-sidebar-language><span class="easyai-sidebar-preference__icon">${currentLanguage() === "ar" ? "EN" : "AR"}</span><span>Language</span></button><button class="easyai-sidebar-preference" type="button" data-easyai-sidebar-theme aria-expanded="false"><span class="easyai-sidebar-color-dot"></span><span>Theme color</span></button><div class="easyai-sidebar-palette" hidden>${COLORS.map((color) => `<button type="button" data-easyai-sidebar-color="${color}" title="${COLOR_LABELS[color]}"><span style="--swatch:${{ orange: "#ff6500", ocean: "#0ea5e9", forest: "#10b981", violet: "#8b5cf6" }[color]}"></span>${COLOR_LABELS[color]}</button>`).join("")}</div></div><button type="button" data-easyai-sidebar-collapse aria-label="Collapse navigation">${easyaiNavIcon("M5 7h14M5 12h10M5 17h14")}<span>Collapse menu</span></button></footer></aside><button class="easyai-sidebar-scrim" type="button" aria-label="Close navigation"></button>`);
 		document.body.classList.add("easyai-nav-mounted");
 		document.documentElement.classList.toggle("easyai-sidebar-collapsed", localStorage.getItem("easyai-sidebar-collapsed") === "1");
 		const sidebar = document.querySelector(".easyai-app-sidebar");
 		sidebar.addEventListener("click", (event) => {
+			const languageButton = event.target.closest("[data-easyai-sidebar-language]");
+			const themeButton = event.target.closest("[data-easyai-sidebar-theme]");
+			const colorButton = event.target.closest("[data-easyai-sidebar-color]");
+			if (languageButton) changeLanguage(currentLanguage() === "ar" ? "en" : "ar");
+			if (themeButton) {
+				const palette = sidebar.querySelector(".easyai-sidebar-palette");
+				palette.hidden = !palette.hidden;
+				themeButton.setAttribute("aria-expanded", String(!palette.hidden));
+			}
+			if (colorButton) {
+				applyColor(colorButton.dataset.easyaiSidebarColor);
+				sidebar.querySelector(".easyai-sidebar-palette").hidden = true;
+			}
 			const sectionButton = event.target.closest(".easyai-app-nav__section-toggle");
 			if (sectionButton) {
 				const section = sectionButton.closest(".easyai-app-nav__section");
@@ -605,8 +623,8 @@
 	function applyEasyAi() {
 		mountBrand();
 		mountSidebarBrand();
-		applyWhiteLabel();
 		mountControls();
+		applyWhiteLabel();
 		mountWorkspaceHero();
 		registerInvoiceEnhancements();
 	}
