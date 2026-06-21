@@ -1,4 +1,4 @@
-/* EasyAi v9 module-aware white-label system */
+/* EasyAi v10 accessible controls and refined navigation */
 :root,
 [data-theme="light"] {
 	--easyai-orange: #f97316;
@@ -2785,4 +2785,186 @@ body::before {
 
 [dir="rtl"] .easyai-activity-list time {
 	text-align: left;
+}
+
+/* EasyAi v10: checkbox, brand, and sidebar refinement */
+:root {
+	--easyai-shell-width: 276px;
+}
+
+.easyai-theme .checkbox input[type="checkbox"],
+.easyai-theme .form-check-input[type="checkbox"],
+.easyai-theme input.grid-row-check,
+.easyai-theme input.list-row-checkbox,
+.easyai-theme .list-row-checkbox input[type="checkbox"],
+.easyai-theme .grid-row-check input[type="checkbox"] {
+	position: relative !important;
+	display: inline-grid !important;
+	place-content: center;
+	width: 18px !important;
+	height: 18px !important;
+	min-width: 18px !important;
+	margin: 0 7px 0 0 !important;
+	padding: 0 !important;
+	border: 1.5px solid #c7cbd1 !important;
+	border-radius: 5px !important;
+	outline: 0;
+	background: #ffffff !important;
+	box-shadow: inset 0 0 0 1px rgb(255 255 255 / 60%);
+	-webkit-appearance: none !important;
+	appearance: none !important;
+	cursor: pointer;
+	transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease, transform 100ms ease;
+}
+
+[dir="rtl"] .easyai-theme .checkbox input[type="checkbox"],
+[dir="rtl"] .easyai-theme .form-check-input[type="checkbox"] {
+	margin-right: 0 !important;
+	margin-left: 7px !important;
+}
+
+.easyai-theme .checkbox input[type="checkbox"]:hover,
+.easyai-theme .form-check-input[type="checkbox"]:hover,
+.easyai-theme input.grid-row-check:hover,
+.easyai-theme input.list-row-checkbox:hover {
+	border-color: #ff7a22 !important;
+	box-shadow: 0 0 0 3px rgb(255 101 0 / 10%);
+}
+
+.easyai-theme .checkbox input[type="checkbox"]:checked,
+.easyai-theme .form-check-input[type="checkbox"]:checked,
+.easyai-theme input.grid-row-check:checked,
+.easyai-theme input.list-row-checkbox:checked,
+.easyai-theme .list-row-checkbox input[type="checkbox"]:checked,
+.easyai-theme .grid-row-check input[type="checkbox"]:checked {
+	border-color: #ff6500 !important;
+	background-color: #ff6500 !important;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3.2 8.3 3 3 6.6-6.6' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
+	background-size: 14px 14px !important;
+	box-shadow: 0 3px 8px rgb(255 101 0 / 24%);
+}
+
+.easyai-theme .checkbox input[type="checkbox"]:active,
+.easyai-theme .form-check-input[type="checkbox"]:active {
+	transform: scale(0.92);
+}
+
+.easyai-theme .checkbox input[type="checkbox"]:focus-visible,
+.easyai-theme .form-check-input[type="checkbox"]:focus-visible,
+.easyai-theme input.grid-row-check:focus-visible,
+.easyai-theme input.list-row-checkbox:focus-visible {
+	outline: 3px solid rgb(255 101 0 / 22%) !important;
+	outline-offset: 2px;
+}
+
+.easyai-theme .checkbox input[type="checkbox"]:disabled,
+.easyai-theme .form-check-input[type="checkbox"]:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.easyai-sidebar-brand {
+	gap: 12px;
+	padding: 0 21px;
+}
+
+.easyai-sidebar-logo {
+	display: block;
+	width: 44px;
+	height: 44px;
+	flex: 0 0 44px;
+	transform: none;
+}
+
+.easyai-sidebar-logo svg {
+	display: block;
+	width: 44px;
+	height: 44px;
+	filter: drop-shadow(0 5px 9px rgb(172 61 0 / 18%));
+}
+
+.easyai-sidebar-wordmark {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	line-height: 1.05;
+}
+
+.easyai-sidebar-wordmark strong {
+	margin: 0;
+	color: #ffffff;
+	font-size: 20px;
+	font-weight: 830;
+	letter-spacing: -0.6px;
+}
+
+.easyai-sidebar-wordmark small {
+	margin-top: 5px;
+	color: rgb(255 255 255 / 78%);
+	font-size: 9px;
+	font-weight: 620;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+@media (min-width: 992px) {
+	.easyai-theme .list-sidebar.overlay-sidebar,
+	.easyai-theme .desk-sidebar {
+		padding: 22px 14px 28px !important;
+	}
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-label,
+.easyai-theme .desk-sidebar .sidebar-label,
+.easyai-theme .desk-sidebar .section-title {
+	margin: 18px 12px 9px;
+	font-size: 9px !important;
+	font-weight: 820 !important;
+	letter-spacing: 0.15em;
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item,
+.easyai-theme .desk-sidebar .desk-sidebar-item {
+	min-height: 47px;
+	margin: 4px 0;
+	padding: 7px 11px !important;
+	border-radius: 12px;
+	font-size: 13px;
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item .sidebar-item-icon,
+.easyai-theme .desk-sidebar .desk-sidebar-item .sidebar-item-icon {
+	width: 32px !important;
+	height: 32px !important;
+	margin-right: 10px;
+	padding: 7px;
+	border-radius: 10px;
+}
+
+.easyai-theme .desk-sidebar .sidebar-item-control {
+	margin-left: auto;
+	border-radius: 8px;
+}
+
+.easyai-theme .desk-sidebar .standard-sidebar-item.selected,
+.easyai-theme .desk-sidebar .standard-sidebar-item.active,
+.easyai-theme .desk-sidebar .desk-sidebar-item.selected {
+	box-shadow: inset 4px 0 0 #ff6500, 0 5px 14px rgb(255 101 0 / 7%) !important;
+}
+
+.easyai-theme .desk-sidebar .sidebar-child-item {
+	margin: 3px 0 8px 22px;
+	padding-left: 13px;
+	border-left: 1px solid #f0dfd3;
+}
+
+[dir="rtl"] .easyai-theme .desk-sidebar .sidebar-child-item {
+	margin-right: 22px;
+	margin-left: 0;
+	padding-right: 13px;
+	padding-left: 0;
+	border-right: 1px solid #f0dfd3;
+	border-left: 0;
 }

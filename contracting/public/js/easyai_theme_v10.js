@@ -159,7 +159,7 @@
 		if (document.querySelector(".easyai-sidebar-brand")) return;
 		document.body.insertAdjacentHTML(
 			"afterbegin",
-			`<div class="easyai-sidebar-brand" aria-label="EasyAi System"><span class="easyai-sidebar-logo"><i></i><i></i><i></i></span><strong>EasyAi</strong><span>System</span></div>`
+			`<div class="easyai-sidebar-brand" aria-label="EasyAi Business Suite"><span class="easyai-sidebar-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="13" fill="white"/><path d="M13 32.5 22.4 13h4.8L37 32.5h-6.2l-1.6-3.8H20l-1.6 3.8H13Zm9.1-8.8h5l-2.5-6.2-2.5 6.2Z" fill="#ff6500"/><circle cx="36.5" cy="13" r="3.5" fill="#ffb067"/></svg></span><span class="easyai-sidebar-wordmark"><strong>EasyAi</strong><small>Business Suite</small></span></div>`
 		);
 	}
 
@@ -197,6 +197,14 @@
 		document.querySelectorAll(".dropdown-menu li, .dropdown-menu a").forEach((item) => {
 			if (/Documentation|Frappe Support|ERPNext Support/i.test(item.textContent)) {
 				item.closest("li")?.classList.add("easyai-hidden-vendor-link");
+			}
+		});
+
+		document.querySelectorAll(".standard-sidebar-label").forEach((label) => {
+			for (const textNode of label.childNodes) {
+				if (textNode.nodeType === Node.TEXT_NODE && textNode.nodeValue.trim().toUpperCase() === "PUBLIC") {
+					textNode.nodeValue = currentLanguage() === "ar" ? "مساحات العمل" : "Workspaces";
+				}
 			}
 		});
 
