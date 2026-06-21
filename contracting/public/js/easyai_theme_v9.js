@@ -285,7 +285,12 @@
 		});
 	}
 
-	function workspaceHeroMarkup() {
+	function currentDashboardModule() {
+		const slug = decodeURIComponent(window.location.pathname.split("/").filter(Boolean).pop() || "home").toLowerCase();
+		return slug === "app" ? "home" : slug;
+	}
+
+	function workspaceHeroMarkup(moduleKey) {
 		const text = copy();
 		const user = window.frappe?.boot?.user?.first_name || window.frappe?.user?.full_name?.()?.split(" ")[0] || "";
 		const hour = new Date().getHours();
@@ -295,26 +300,26 @@
 		const safeUser = window.frappe?.utils?.escape_html ? frappe.utils.escape_html(user) : user;
 		const today = new Intl.DateTimeFormat(currentLanguage() === "ar" ? "ar" : "en", { dateStyle: "medium" }).format(new Date());
 		return `
-			<section class="easyai-dashboard-shell">
+			<section class="easyai-dashboard-shell" data-module="${moduleKey}">
 				<header class="easyai-dashboard-header">
-					<div><h2>${greeting}${safeUser ? `, ${safeUser}` : ""}! <span>👋</span></h2><p>${text.dashboardSubtitle}</p></div>
+					<div><h2 data-dashboard-title>${greeting}${safeUser ? `, ${safeUser}` : ""}! <span>👋</span></h2><p data-dashboard-subtitle>${text.dashboardSubtitle}</p></div>
 					<div class="easyai-dashboard-date">${today}</div>
 				</header>
 				<div class="easyai-dashboard-layout">
 					<main class="easyai-dashboard-main">
-						<div class="easyai-kpi-grid">
+						<div class="easyai-kpi-grid" data-kpi-grid>
 							<article class="easyai-kpi-card" data-kpi="sales"><span class="easyai-kpi-icon">↗</span><div><small>${text.totalSales}</small><strong>—</strong><em>${currentLanguage() === "ar" ? "المبيعات المعتمدة" : "Submitted invoices"}</em></div></article>
 							<article class="easyai-kpi-card" data-kpi="purchases"><span class="easyai-kpi-icon">⌑</span><div><small>${text.totalPurchases}</small><strong>—</strong><em>${currentLanguage() === "ar" ? "المشتريات المعتمدة" : "Submitted purchases"}</em></div></article>
 							<article class="easyai-kpi-card" data-kpi="customers"><span class="easyai-kpi-icon">◎</span><div><small>${text.customers}</small><strong>—</strong><em>${currentLanguage() === "ar" ? "إجمالي العملاء" : "Active records"}</em></div></article>
 							<article class="easyai-kpi-card" data-kpi="projects"><span class="easyai-kpi-icon">▣</span><div><small>${text.projectsCount}</small><strong>—</strong><em>${currentLanguage() === "ar" ? "إجمالي المشاريع" : "All projects"}</em></div></article>
 						</div>
 						<article class="easyai-analytics-card">
-							<header><div><h3>${text.salesOverview}</h3><p>${currentLanguage() === "ar" ? "آخر ستة أشهر" : "Last six months"}</p></div><span class="easyai-analytics-total" data-sales-total>—</span></header>
+							<header><div><h3 data-chart-title>${text.salesOverview}</h3><p>${currentLanguage() === "ar" ? "آخر ستة أشهر" : "Last six months"}</p></div><span class="easyai-analytics-total" data-sales-total>—</span></header>
 							<div class="easyai-sales-chart" data-sales-chart><div class="easyai-chart-loading"></div></div>
 						</article>
 					</main>
 					<aside class="easyai-dashboard-aside">
-						<article class="easyai-dashboard-panel"><header><h3>${text.shortcuts}</h3></header><div class="easyai-dashboard-shortcuts">
+						<article class="easyai-dashboard-panel"><header><h3>${text.shortcuts}</h3></header><div class="easyai-dashboard-shortcuts" data-shortcut-list>
 							<button data-doctype="Sales Invoice" data-action="new"><span>＋</span>${text.addInvoice}</button>
 							<button data-doctype="Customer" data-action="new"><span>◎</span>${text.addCustomer}</button>
 							<button data-doctype="Item" data-action="new"><span>◇</span>${text.addItem}</button>
@@ -357,24 +362,40 @@
 		chart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Sales trend"><defs><linearGradient id="easyaiArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--easyai-orange)" stop-opacity=".25"/><stop offset="1" stop-color="var(--easyai-orange)" stop-opacity="0"/></linearGradient></defs><g class="easyai-chart-grid"><line x1="${padding}" y1="${height * .28}" x2="${width - padding}" y2="${height * .28}"/><line x1="${padding}" y1="${height * .55}" x2="${width - padding}" y2="${height * .55}"/><line x1="${padding}" y1="${height * .82}" x2="${width - padding}" y2="${height * .82}"/></g><polygon points="${area}" fill="url(#easyaiArea)"/><polyline points="${line}" fill="none" stroke="var(--easyai-orange)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${points.map((point) => `<circle cx="${point.x}" cy="${point.y}" r="4" fill="white" stroke="var(--easyai-orange)" stroke-width="3"><title>${point.label}: ${formatDashboardValue(point.value, currency, true)}</title></circle>`).join("")}</svg><div class="easyai-chart-labels">${points.map((point) => `<span>${point.label}</span>`).join("")}</div>`;
 	}
 
-	async function loadDashboardData(shell) {
+	async function loadDashboardData(shell, moduleKey) {
 		if (shell.dataset.loaded) return;
 		shell.dataset.loaded = "1";
 		try {
-			const response = await frappe.call("contracting.easyai_branding.get_dashboard_data");
-			const data = response.message || {};
-			const metrics = data.metrics || {};
-			[["sales", true], ["purchases", true], ["customers", false], ["projects", false]].forEach(([key, currency]) => {
-				const target = shell.querySelector(`[data-kpi="${key}"] strong`);
-				if (target) target.textContent = formatDashboardValue(metrics[key], data.currency, currency);
+			const response = await frappe.call({
+				method: "contracting.easyai_dashboards.get_dashboard_data",
+				args: { module: moduleKey },
 			});
+			const data = response.message || {};
+			const escape = (value) => frappe.utils?.escape_html ? frappe.utils.escape_html(String(value || "")) : String(value || "");
+			const title = shell.querySelector("[data-dashboard-title]");
+			const subtitle = shell.querySelector("[data-dashboard-subtitle]");
+			if (title) title.textContent = data.title || "EasyAi Overview";
+			if (subtitle) subtitle.textContent = data.subtitle || "";
+
+			const metricGrid = shell.querySelector("[data-kpi-grid]");
+			if (metricGrid) {
+				metricGrid.innerHTML = (data.metrics || []).map((item) => `<article class="easyai-kpi-card" data-kpi="${escape(item.key)}"><span class="easyai-kpi-icon">${escape(item.icon)}</span><div><small>${escape(item.label)}</small><strong>${escape(formatDashboardValue(item.value, data.currency, item.currency))}</strong><em>${escape(item.hint)}</em></div></article>`).join("");
+			}
+
+			const chartTitle = shell.querySelector("[data-chart-title]");
+			if (chartTitle) chartTitle.textContent = data.chart?.title || "Activity Overview";
 			const salesTotal = shell.querySelector("[data-sales-total]");
-			if (salesTotal) salesTotal.textContent = formatDashboardValue(metrics.sales, data.currency, true);
-			renderSalesChart(shell, data.monthly_sales, data.currency);
+			const chartTotal = (data.chart?.values || []).reduce((total, row) => total + Number(row.total || 0), 0);
+			if (salesTotal) salesTotal.textContent = formatDashboardValue(chartTotal, data.currency, data.chart?.currency);
+			renderSalesChart(shell, data.chart?.values, data.currency);
+
+			const shortcuts = shell.querySelector("[data-shortcut-list]");
+			if (shortcuts) {
+				shortcuts.innerHTML = (data.shortcuts || []).map((item) => `<button data-doctype="${escape(item.target)}" data-action="${escape(item.action)}"><span>${escape(item.icon)}</span>${escape(item.label)}</button>`).join("");
+			}
 
 			const activity = shell.querySelector("[data-activity-list]");
 			if (activity) {
-				const escape = (value) => frappe.utils?.escape_html ? frappe.utils.escape_html(String(value || "")) : String(value || "");
 				const activityTime = (value) => {
 					const date = new Date(String(value || "").replace(" ", "T"));
 					if (Number.isNaN(date.getTime())) return "";
@@ -393,14 +414,18 @@
 	}
 
 	function mountWorkspaceHero() {
-		if (!window.frappe || document.querySelector(".easyai-dashboard-shell")) return;
+		if (!window.frappe) return;
+		const moduleKey = currentDashboardModule();
+		const existing = document.querySelector(".easyai-dashboard-shell");
+		if (existing?.dataset.module === moduleKey) return;
+		existing?.remove();
 		const workspace = document.querySelector(
 			".layout-main-section .workspace-container, .layout-main-section .editor-js-container, .workspace-container, .editor-js-container"
 		);
 		if (!workspace) return;
-		workspace.insertAdjacentHTML("afterbegin", workspaceHeroMarkup());
+		workspace.insertAdjacentHTML("afterbegin", workspaceHeroMarkup(moduleKey));
 		const shell = workspace.querySelector(".easyai-dashboard-shell");
-		loadDashboardData(shell);
+		loadDashboardData(shell, moduleKey);
 
 		shell.addEventListener("click", (event) => {
 			const actionButton = event.target.closest("[data-doctype]");
@@ -412,6 +437,8 @@
 				frappe.new_doc(doctype);
 			} else if (actionButton.dataset.action === "route") {
 				frappe.set_route("query-report", doctype);
+			} else if (actionButton.dataset.action === "list") {
+				frappe.set_route("List", doctype, "List");
 			} else {
 				frappe.set_route("List", doctype, "List");
 			}
