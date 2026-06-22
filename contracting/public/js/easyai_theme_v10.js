@@ -164,7 +164,7 @@
 		if (document.querySelector(".easyai-sidebar-brand")) return;
 		document.body.insertAdjacentHTML(
 			"afterbegin",
-			`<a class="easyai-sidebar-brand" href="/app/home" aria-label="EasyAi Home" title="Go to Home"><span class="easyai-word-logo">Easy<span>Ai</span><i></i></span></a>`
+			`<a class="easyai-sidebar-brand" href="/app/home" aria-label="EasyAi Home" title="Go to Home"><span class="easyai-word-logo" dir="ltr">Easy<span>Ai</span><i></i></span></a>`
 		);
 	}
 
