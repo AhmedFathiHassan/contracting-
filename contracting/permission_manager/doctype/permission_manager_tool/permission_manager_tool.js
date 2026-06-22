@@ -10,7 +10,9 @@ frappe.ui.form.on("Permission Manager Tool", {
 			method: "contracting.permission_manager.doctype.permission_manager_tool.permission_manager_tool.get_role_options",
 		});
 		frm.set_df_property("source_role", "options", ["", ...(response.message || [])]);
+		frm.set_df_property("target_role", "options", ["", ...(response.message || [])]);
 		frm.refresh_field("source_role");
+		frm.refresh_field("target_role");
 		frm.trigger("render_summary");
 	},
 
@@ -77,6 +79,51 @@ frappe.ui.form.on("Permission Manager Tool", {
 					]),
 				});
 				frm.set_value("new_role_name", "");
+			},
+		);
+	},
+
+	apply_bulk_permissions(frm) {
+		const doctypes = (frm.doc.selected_doctypes || []).map((row) => row.document_type).filter(Boolean);
+		const rights = [
+			"select", "read", "write", "create", "delete", "submit", "cancel", "amend",
+			"report", "export", "import", "share", "print", "email",
+		].filter((right) => frm.doc[`allow_${right}`]);
+
+		if (!frm.doc.target_role || !doctypes.length || !rights.length) {
+			frappe.msgprint(__("Select a target role, one or more Document Types, and at least one permission."));
+			return;
+		}
+
+		frappe.confirm(
+			__("Apply {0} permissions to {1} Document Types for role <b>{2}</b>?", [
+				rights.length,
+				doctypes.length,
+				frappe.utils.escape_html(frm.doc.target_role),
+			]),
+			async () => {
+				const response = await frappe.call({
+					method: "contracting.permission_manager.doctype.permission_manager_tool.permission_manager_tool.apply_bulk_permissions",
+					args: {
+						role: frm.doc.target_role,
+						doctypes,
+						permissions: rights,
+						replace_existing: frm.doc.replace_existing,
+					},
+					freeze: true,
+					freeze_message: __("Applying permissions..."),
+				});
+				const data = response.message || {};
+				frappe.msgprint({
+					title: __("Permissions Applied"),
+					indicator: "green",
+					message: __("Updated {0} Document Types for role <b>{1}</b>.", [
+						data.doctype_count || 0,
+						frappe.utils.escape_html(data.role || frm.doc.target_role),
+					]),
+				});
+				frm.clear_table("selected_doctypes");
+				frm.refresh_field("selected_doctypes");
 			},
 		);
 	},

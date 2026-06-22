@@ -26,6 +26,7 @@ PERMISSION_FIELDS = (
 )
 
 ACCESS_PARENT_TYPES = ("Page", "Report", "Workspace")
+RIGHT_FIELDS = tuple(field for field in PERMISSION_FIELDS if field not in ("permlevel", "if_owner"))
 
 
 class PermissionManagerTool(Document):
@@ -84,6 +85,90 @@ def get_role_summary(role: str) -> dict:
 		"doctype_count": len(doctypes),
 		"permission_rows": len(permissions),
 		"access_rules": access_rules,
+	}
+
+
+def _as_list(value) -> list:
+	if isinstance(value, str):
+		value = frappe.parse_json(value)
+	return list(value or [])
+
+
+@frappe.whitelist()
+def apply_bulk_permissions(
+	role: str,
+	doctypes,
+	permissions,
+	replace_existing: int | str = 0,
+) -> dict:
+	_require_system_manager()
+	role = _clean_role_name(role)
+	if not role or not frappe.db.exists("Role", role):
+		frappe.throw(_("Please select a valid target role."))
+
+	selected_doctypes = list(dict.fromkeys(str(value).strip() for value in _as_list(doctypes) if value))
+	selected_permissions = [value for value in _as_list(permissions) if value in RIGHT_FIELDS]
+	if not selected_doctypes:
+		frappe.throw(_("Please select at least one Document Type."))
+	if not selected_permissions:
+		frappe.throw(_("Please select at least one permission."))
+
+	valid_doctypes = set(
+		frappe.get_all(
+			"DocType",
+			filters={"name": ["in", selected_doctypes], "istable": 0},
+			pluck="name",
+		)
+	)
+	invalid_doctypes = [doctype for doctype in selected_doctypes if doctype not in valid_doctypes]
+	if invalid_doctypes:
+		frappe.throw(_("Invalid Document Types: {0}").format(", ".join(invalid_doctypes)))
+
+	created = 0
+	updated = 0
+	for doctype in selected_doctypes:
+		if not frappe.db.exists("Custom DocPerm", {"parent": doctype}):
+			copy_perms(doctype)
+
+		permission_name = frappe.db.get_value(
+			"Custom DocPerm",
+			{"parent": doctype, "role": role, "permlevel": 0, "if_owner": 0},
+			"name",
+		)
+		if permission_name:
+			permission_doc = frappe.get_doc("Custom DocPerm", permission_name)
+			updated += 1
+		else:
+			permission_doc = frappe.get_doc(
+				{
+					"doctype": "Custom DocPerm",
+					"parent": doctype,
+					"role": role,
+					"permlevel": 0,
+					"if_owner": 0,
+				}
+			)
+			created += 1
+
+		if frappe.utils.cint(replace_existing):
+			for right in RIGHT_FIELDS:
+				permission_doc.set(right, 0)
+		for right in selected_permissions:
+			permission_doc.set(right, 1)
+
+		if permission_doc.is_new():
+			permission_doc.insert(ignore_permissions=True)
+		else:
+			permission_doc.save(ignore_permissions=True)
+		frappe.clear_cache(doctype=doctype)
+
+	frappe.clear_cache()
+	return {
+		"role": role,
+		"doctype_count": len(selected_doctypes),
+		"permissions": selected_permissions,
+		"created": created,
+		"updated": updated,
 	}
 
 
