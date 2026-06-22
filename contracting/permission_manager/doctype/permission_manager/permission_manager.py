@@ -45,6 +45,22 @@ def _effective_permissions(role: str) -> list[frappe._dict]:
 
 
 @frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def search_roles(doctype, txt, searchfield, start, page_len, filters):
+	_require_system_manager()
+	return frappe.db.sql(
+		"""
+		select name, case when desk_access = 1 then 'Desk Access' else 'Portal Only' end
+		from `tabRole`
+		where disabled = 0 and name like %(txt)s
+		order by name
+		limit %(start)s, %(page_len)s
+		""",
+		{"txt": f"%{txt}%", "start": start, "page_len": page_len},
+	)
+
+
+@frappe.whitelist()
 def get_role_summary(role: str) -> dict:
 	_require_system_manager()
 	role = _clean_role_name(role)

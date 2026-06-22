@@ -1,6 +1,9 @@
 frappe.ui.form.on("Permission Manager", {
 	refresh(frm) {
 		frm.disable_save();
+		frm.set_query("source_role", () => ({
+			query: "contracting.permission_manager.doctype.permission_manager.permission_manager.search_roles",
+		}));
 		frm.page.set_title(__("Permission Manager"));
 		frm.set_intro(
 			__("Duplicate an existing role with its complete effective permission matrix."),
