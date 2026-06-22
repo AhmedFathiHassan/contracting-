@@ -1,4 +1,4 @@
-frappe.ui.form.on("Permission Manager", {
+frappe.ui.form.on("Permission Manager Tool", {
 	async refresh(frm) {
 		frm.disable_save();
 		frm.page.set_title(__("Permission Manager"));
@@ -7,7 +7,7 @@ frappe.ui.form.on("Permission Manager", {
 			"orange"
 		);
 		const response = await frappe.call({
-			method: "contracting.permission_manager.doctype.permission_manager.permission_manager.get_role_options",
+			method: "contracting.permission_manager.doctype.permission_manager_tool.permission_manager_tool.get_role_options",
 		});
 		frm.set_df_property("source_role", "options", ["", ...(response.message || [])]);
 		frm.refresh_field("source_role");
@@ -29,7 +29,7 @@ frappe.ui.form.on("Permission Manager", {
 		wrapper.html('<div class="permission-manager-loading">Loading permission summary...</div>');
 		try {
 			const response = await frappe.call({
-				method: "contracting.permission_manager.doctype.permission_manager.permission_manager.get_role_summary",
+				method: "contracting.permission_manager.doctype.permission_manager_tool.permission_manager_tool.get_role_summary",
 				args: { role: frm.doc.source_role },
 			});
 			const data = response.message || {};
@@ -57,7 +57,7 @@ frappe.ui.form.on("Permission Manager", {
 			]),
 			async () => {
 				const response = await frappe.call({
-					method: "contracting.permission_manager.doctype.permission_manager.permission_manager.duplicate_role",
+					method: "contracting.permission_manager.doctype.permission_manager_tool.permission_manager_tool.duplicate_role",
 					args: {
 						source_role: frm.doc.source_role,
 						new_role_name: frm.doc.new_role_name,

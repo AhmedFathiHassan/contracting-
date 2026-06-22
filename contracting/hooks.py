@@ -13,12 +13,12 @@ app_license = "MIT"
 # ------------------
 
 # include js, css files in header of desk.html
-app_include_css = "/assets/contracting/css/easyai_theme_v10.css?v=21"
-app_include_js = "/assets/contracting/js/easyai_theme_v10.js?v=21"
+app_include_css = "/assets/contracting/css/easyai_theme_v10.css?v=22"
+app_include_js = "/assets/contracting/js/easyai_theme_v10.js?v=22"
 
 # include js, css files in header of web template
-web_include_css = "/assets/contracting/css/easyai_theme_v10.css?v=21"
-web_include_js = "/assets/contracting/js/easyai_theme_v10.js?v=21"
+web_include_css = "/assets/contracting/css/easyai_theme_v10.css?v=22"
+web_include_js = "/assets/contracting/js/easyai_theme_v10.js?v=22"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "contracting/public/scss/website"
@@ -67,6 +67,8 @@ doctype_js = {
 
 # before_install = "contracting.install.before_install"
 # after_install = "contracting.contracting.api.install_app_requirements"
+before_migrate = "contracting.permission_manager.migrate.restore_core_permission_manager_route"
+
 after_migrate = [
 	"contracting.contracting.api.install_app_requirements",
 	"contracting.easyai_branding.install_branding",

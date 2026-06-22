@@ -173,7 +173,7 @@
 		["Operations", [["Selling", "selling", "M4 19V9m8 10V5m8 14v-7M3 19h18"], ["Buying", "buying", "M4 5h2l2 10h9l2-7H7m2 11h.01M17 19h.01"], ["Stock", "stock", "m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M12 12 4 7.5"]]],
 		["Finance", [["Accounting", "accounting", "M5 3h14v18H5V3Zm3 5h8m-8 4h3m2 0h3m-8 4h3m2 0h3"], ["Assets", "assets", "M5 8h14v11H5V8Zm3 0V5h8v3"]]],
 		["Work", [["Projects", "projects", "M4 7h6l2 2h8v10H4V7Z"], ["HR & Payroll", "hr", "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8 0v6m3-3h-6"], ["Support", "support", "M4 13v-2a8 8 0 0 1 16 0v2M4 13h3v6H4v-6Zm16 0h-3v6h3v-6Z"]]],
-		["Insights", [["Reports", "query-report/General-Ledger", "M5 20V10m5 10V4m5 16v-7m5 7V7"], ["Permission Manager", "permission-manager", "M12 3 20 6v5c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-3Zm-3 9 2 2 4-5"], ["Settings", "settings", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-5v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"]]],
+		["Insights", [["Reports", "query-report/General-Ledger", "M5 20V10m5 10V4m5 16v-7m5 7V7"], ["Role Permissions", "permission-manager", "M4 6h16v14H4V6Zm4-3h8v3H8V3Zm1 8h6m-6 4h4"], ["Permission Manager", "permission-manager-tool", "M12 3 20 6v5c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-3Zm-3 9 2 2 4-5"], ["Settings", "settings", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-5v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"]]],
 	];
 
 	function easyaiNavIcon(path) {
@@ -184,7 +184,8 @@
 		const path = decodeURIComponent(window.location.pathname).toLowerCase();
 		document.querySelectorAll(".easyai-app-nav__link").forEach((link) => {
 			const route = link.dataset.route;
-			const active = route === "home" ? /\/app\/?(home)?$/.test(path) : path.includes(route);
+			const current = path.split("/app/")[1]?.split("/")[0] || "home";
+			const active = route.includes("/") ? path.includes(route) : current === route;
 			link.classList.toggle("is-active", active);
 			if (active) link.closest(".easyai-app-nav__section")?.classList.add("is-open");
 		});

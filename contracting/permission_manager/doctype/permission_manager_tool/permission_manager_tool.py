@@ -28,7 +28,7 @@ PERMISSION_FIELDS = (
 ACCESS_PARENT_TYPES = ("Page", "Report", "Workspace")
 
 
-class PermissionManager(Document):
+class PermissionManagerTool(Document):
 	pass
 
 
