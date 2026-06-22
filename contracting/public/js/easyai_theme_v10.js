@@ -604,7 +604,7 @@
 	}
 
 	function registerInvoiceEnhancements() {
-		if (!window.frappe?.ui?.form || window.__easyaiInvoiceEnhancementsRegistered) {
+		if (!window.frappe?.ui?.form || typeof frappe.ui.form.on !== "function" || window.__easyaiInvoiceEnhancementsRegistered) {
 			enhanceInvoiceItems();
 			return;
 		}
