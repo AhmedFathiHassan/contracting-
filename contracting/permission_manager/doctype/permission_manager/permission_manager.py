@@ -61,6 +61,12 @@ def search_roles(doctype, txt, searchfield, start, page_len, filters):
 
 
 @frappe.whitelist()
+def get_role_options() -> list[str]:
+	_require_system_manager()
+	return frappe.get_all("Role", filters={"disabled": 0}, pluck="name", order_by="name asc")
+
+
+@frappe.whitelist()
 def get_role_summary(role: str) -> dict:
 	_require_system_manager()
 	role = _clean_role_name(role)

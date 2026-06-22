@@ -27,10 +27,9 @@
   },
   {
    "fieldname": "source_role",
-   "fieldtype": "Link",
-   "label": "Source Role",
-   "options": "Role",
-   "reqd": 1
+   "fieldtype": "Select",
+	   "label": "Source Role",
+	   "reqd": 1
   },
   {
    "fieldname": "column_break_role",

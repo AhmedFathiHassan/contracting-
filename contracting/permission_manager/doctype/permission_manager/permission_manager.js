@@ -1,17 +1,16 @@
 frappe.ui.form.on("Permission Manager", {
-	setup(frm) {
-		frm.set_query("source_role", () => ({
-			query: "contracting.permission_manager.doctype.permission_manager.permission_manager.search_roles",
-		}));
-	},
-
-	refresh(frm) {
+	async refresh(frm) {
 		frm.disable_save();
 		frm.page.set_title(__("Permission Manager"));
 		frm.set_intro(
 			__("Duplicate an existing role with its complete effective permission matrix."),
 			"orange"
 		);
+		const response = await frappe.call({
+			method: "contracting.permission_manager.doctype.permission_manager.permission_manager.get_role_options",
+		});
+		frm.set_df_property("source_role", "options", ["", ...(response.message || [])]);
+		frm.refresh_field("source_role");
 		frm.trigger("render_summary");
 	},
 
