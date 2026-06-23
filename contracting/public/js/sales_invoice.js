@@ -17,8 +17,3 @@ frappe.ui.form.on("Sales Invoice", {
     }
 })
 
-frappe.ui.form.on("Sales Invoice Item", {
-    item_code(frm, cdt, cdn) {
-        frappe.model.set_value(cdt, cdn, "use_serial_batch_fields", 1);
-    },
-});

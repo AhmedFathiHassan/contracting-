@@ -66,7 +66,7 @@ PROFILES = {
 		"metrics": [metric("items", "Items", "Item", filters={"disabled": 0}, hint="Enabled items"), metric("warehouses", "Warehouses", "Warehouse", filters={"disabled": 0}, hint="Active warehouses", icon="▦"), metric("entries", "Stock Entries", "Stock Entry", filters={"docstatus": 1}, hint="Submitted entries", icon="↗"), metric("requests", "Material Requests", "Material Request", filters={"docstatus": 1}, hint="Submitted requests", icon="▣")],
 		"chart": ("Stock Movement", "Stock Entry", "posting_date", "count", None, {"docstatus": 1}, False),
 		"activity": (("Stock Entry", "Stock Entry"), ("Material Request", "Material Request"), ("Item", "Item"), ("Warehouse", "Warehouse")),
-		"shortcuts": [shortcut("Purchase Receipt", "Purchase Receipt"), shortcut("Stock Entry", "Stock Entry"), shortcut("Batch Balance", "Batch-Wise Balance History", "route", "B"), shortcut("Serial Ledger", "Serial No Ledger", "route", "S"), shortcut("Stock Reconciliation", "Stock Reconciliation", icon="⌑"), shortcut("Stock Analytics", "Stock Analytics", "route", "↗")],
+		"shortcuts": [shortcut("Stock Entry", "Stock Entry"), shortcut("Add Item", "Item", icon="◇"), shortcut("Material Request", "Material Request", icon="▣"), shortcut("Stock Reconciliation", "Stock Reconciliation", icon="⌑"), shortcut("Stock Analytics", "Stock Analytics", "route", "↗")],
 	},
 	"accounting": {
 		"title": "Accounting Overview",
@@ -74,26 +74,7 @@ PROFILES = {
 		"metrics": [metric("receivables", "Receivables", "Sales Invoice", "sum", "outstanding_amount", {"docstatus": 1}, True, "Outstanding sales", "↗"), metric("payables", "Payables", "Purchase Invoice", "sum", "outstanding_amount", {"docstatus": 1}, True, "Outstanding purchases", "⌑"), metric("journals", "Journal Entries", "Journal Entry", filters={"docstatus": 1}, hint="Submitted journals", icon="▤"), metric("payments", "Payment Entries", "Payment Entry", filters={"docstatus": 1}, hint="Submitted payments", icon="◎")],
 		"chart": ("Receivables Trend", "Sales Invoice", "posting_date", "sum", "grand_total", {"docstatus": 1}, True),
 		"activity": (("Payment Entry", "Payment Entry"), ("Journal Entry", "Journal Entry"), ("Sales Invoice", "Sales Invoice"), ("Purchase Invoice", "Purchase Invoice")),
-		"shortcuts": [shortcut("Journal Entry", "Journal Entry"), shortcut("Payment Entry", "Payment Entry", icon="◎"), shortcut("Profit and Loss", "EasyAi Profit and Loss", "route", "P&L"), shortcut("General Ledger", "General Ledger", "route", "↗"), shortcut("Chart of Accounts", "Account", "list", "COA"), shortcut("Accounts Receivable", "Accounts Receivable", "route", "▤")],
-	},
-	"hr": {
-		"title": "People & Payroll Control Center",
-		"subtitle": "Control the complete employee cycle from onboarding to payroll and separation.",
-		"metrics": [
-			metric("employees", "Active Employees", "Employee", filters={"status": "Active"}, hint="Current workforce", icon="E"),
-			metric("attendance", "Attendance Today", "Attendance", filters={"attendance_date": today(), "docstatus": 1}, hint="Submitted today", icon="A"),
-			metric("leave", "Pending Leave", "Leave Application", filters={"status": "Open", "docstatus": 0}, hint="Needs approval", icon="L"),
-			metric("payroll", "Payroll Runs", "Payroll Entry", filters={"docstatus": 1}, hint="Submitted payroll", icon="P"),
-		],
-		"chart": ("Workforce Growth", "Employee", "date_of_joining", "count", None, {"status": "Active"}, False),
-		"activity": (("Employee", "Employee"), ("Employee Onboarding", "Onboarding"), ("Leave Application", "Leave"), ("Attendance", "Attendance"), ("Payroll Entry", "Payroll")),
-		"shortcuts": [
-			shortcut("Add Employee", "Employee"), shortcut("Onboarding", "Employee Onboarding", icon="O"),
-			shortcut("Attendance", "Attendance", icon="A"), shortcut("Shift Assignment", "Shift Assignment", icon="S"),
-			shortcut("Leave Request", "Leave Application", icon="L"), shortcut("Expense Claim", "Expense Claim", icon="E"),
-			shortcut("Payroll Entry", "Payroll Entry", icon="P"), shortcut("Salary Slips", "Salary Slip", "list", "S"),
-			shortcut("Appraisal", "Appraisal", icon="A"), shortcut("Employee Separation", "Employee Separation", icon="X"),
-		],
+		"shortcuts": [shortcut("Journal Entry", "Journal Entry"), shortcut("Payment Entry", "Payment Entry", icon="◎"), shortcut("General Ledger", "General Ledger", "route", "↗"), shortcut("Accounts Receivable", "Accounts Receivable", "route", "▤")],
 	},
 	"projects": {
 		"title": "Projects Overview",
