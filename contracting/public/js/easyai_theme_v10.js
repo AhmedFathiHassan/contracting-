@@ -621,6 +621,32 @@
 		enhanceInvoiceItems();
 	}
 
+	function mountPasswordToggles() {
+		document.querySelectorAll('input[type="password"], input[data-easyai-password="1"]').forEach((input) => {
+			if (input.dataset.easyaiPasswordMounted === "1") return;
+			const wrapper = input.parentElement;
+			if (!wrapper || wrapper.querySelector(":scope > .easyai-password-toggle")) return;
+			input.dataset.easyaiPasswordMounted = "1";
+			input.dataset.easyaiPassword = "1";
+			wrapper.classList.add("easyai-password-field");
+			const button = document.createElement("button");
+			button.type = "button";
+			button.className = "easyai-password-toggle";
+			button.setAttribute("aria-label", "Show password");
+			button.setAttribute("title", "Show password");
+			button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/></svg>';
+			button.addEventListener("click", () => {
+				const reveal = input.type === "password";
+				input.type = reveal ? "text" : "password";
+				button.classList.toggle("is-visible", reveal);
+				button.setAttribute("aria-label", reveal ? "Hide password" : "Show password");
+				button.setAttribute("title", reveal ? "Hide password" : "Show password");
+				input.focus({ preventScroll: true });
+			});
+			wrapper.appendChild(button);
+		});
+	}
+
 	function applyEasyAi() {
 		mountBrand();
 		mountSidebarBrand();
@@ -628,6 +654,7 @@
 		applyWhiteLabel();
 		mountWorkspaceHero();
 		registerInvoiceEnhancements();
+		mountPasswordToggles();
 	}
 
 	applyColor(localStorage.getItem(STORAGE_COLOR) || "orange");

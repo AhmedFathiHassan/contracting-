@@ -13,12 +13,12 @@ app_license = "MIT"
 # ------------------
 
 # include js, css files in header of desk.html
-app_include_css = "/assets/contracting/css/easyai_theme_v10.css?v=24"
-app_include_js = "/assets/contracting/js/easyai_theme_v10.js?v=24"
+app_include_css = "/assets/contracting/css/easyai_theme_v10.css?v=25"
+app_include_js = "/assets/contracting/js/easyai_theme_v10.js?v=25"
 
 # include js, css files in header of web template
-web_include_css = "/assets/contracting/css/easyai_theme_v10.css?v=24"
-web_include_js = "/assets/contracting/js/easyai_theme_v10.js?v=24"
+web_include_css = "/assets/contracting/css/easyai_theme_v10.css?v=25"
+web_include_js = "/assets/contracting/js/easyai_theme_v10.js?v=25"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "contracting/public/scss/website"
@@ -38,6 +38,9 @@ doctype_js = {
               "Purchase Order" : "public/js/purchase_order.js",
               "Purchase Invoice" : "public/js/purchase_invoice.js",
               "Sales Invoice" : "public/js/sales_invoice.js",
+              "Purchase Receipt" : "public/js/purchase_receipt.js",
+              "Stock Entry" : "public/js/stock_entry.js",
+              "Company" : "public/js/company.js",
               "Task" : "public/js/task.js"
             }
 
@@ -72,6 +75,7 @@ before_migrate = "contracting.permission_manager.migrate.restore_core_permission
 after_migrate = [
 	"contracting.contracting.api.install_app_requirements",
 	"contracting.easyai_branding.install_branding",
+	"contracting.inventory_controls.configure_serial_batch_fields",
 ]
 # Uninstallation
 # ------------
@@ -112,6 +116,9 @@ override_doctype_class = {
 # Hook on document methods and events
 
 doc_events = {
+	"Purchase Receipt": {"validate": "contracting.inventory_controls.validate_serial_and_batch"},
+	"Delivery Note": {"validate": "contracting.inventory_controls.validate_serial_and_batch"},
+	"Stock Entry": {"validate": "contracting.inventory_controls.validate_serial_and_batch"},
     # "Project":{
     # "on_update":"contracting.contracting.project.re_calc_cost"
 	# },
@@ -135,11 +142,13 @@ doc_events = {
 		"validate":"contracting.contracting.controllers.quotation.calculate_totals"
 	},
     "Sales Invoice":{
+		"validate":"contracting.inventory_controls.validate_serial_and_batch",
 		"on_submit":"contracting.contracting.controllers.sales_invoice.update_remaining_qty_on_submit",
         "on_cancel":"contracting.contracting.controllers.sales_invoice.restore_qty_on_cancel_or_delete"
         
 	},
     "Purchase Invoice":{
+		"validate":"contracting.inventory_controls.validate_serial_and_batch",
 		"on_submit":"contracting.contracting.controllers.sales_invoice.update_remaining_qty_on_submit",
         "on_cancel":"contracting.contracting.controllers.sales_invoice.restore_qty_on_cancel_or_delete"
         
