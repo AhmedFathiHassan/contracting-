@@ -96,44 +96,21 @@ def configure_serial_batch_fields():
 	if changed:
 		settings.save(ignore_permissions=True)
 
-	grid_layouts = {
-		"Purchase Receipt Item": {
-			"item_code": 2, "qty": 1, "batch_no": 2, "serial_no": 2, "rate": 1, "amount": 2,
-			"rejected_qty": 0, "net_amount": 0, "warehouse": 0,
-		},
-		"Stock Entry Detail": {
-			"s_warehouse": 1, "t_warehouse": 1, "item_code": 2, "qty": 1, "batch_no": 2, "serial_no": 3,
-			"basic_rate": 0,
-		},
-	}
-	for doctype, layout in grid_layouts.items():
-		for fieldname, columns in layout.items():
+	for doctype, fields in {
+		"Purchase Receipt Item": ("batch_no", "serial_no"),
+		"Stock Entry Detail": ("batch_no", "serial_no"),
+		"Delivery Note Item": ("batch_no", "serial_no"),
+		"Sales Invoice Item": ("batch_no", "serial_no"),
+	}.items():
+		for fieldname in fields:
 			frappe.make_property_setter(
 				{
 					"doctype": doctype,
 					"fieldname": fieldname,
 					"property": "in_list_view",
-					"value": "1" if columns else "0",
+					"value": "1",
 					"property_type": "Check",
 				},
-				validate_fields_for_doctype=False,
-			)
-			if columns:
-				frappe.make_property_setter(
-					{
-						"doctype": doctype,
-						"fieldname": fieldname,
-						"property": "columns",
-						"value": str(columns),
-						"property_type": "Int",
-					},
-					validate_fields_for_doctype=False,
-				)
-
-	for doctype in ("Delivery Note Item", "Sales Invoice Item"):
-		for fieldname in ("batch_no", "serial_no"):
-			frappe.make_property_setter(
-				{"doctype": doctype, "fieldname": fieldname, "property": "in_list_view", "value": "1", "property_type": "Check"},
 				validate_fields_for_doctype=False,
 			)
 	frappe.clear_cache()
