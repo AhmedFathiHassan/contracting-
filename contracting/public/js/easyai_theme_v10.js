@@ -170,14 +170,27 @@
 
 	const EASYAI_NAV = [
 		["Overview", [["Home", "home", "M4 10.5 12 4l8 6.5V20H5v-9.5Z"]]],
-		["Operations", [["Selling", "selling", "M4 19V9m8 10V5m8 14v-7M3 19h18"], ["Buying", "buying", "M4 5h2l2 10h9l2-7H7m2 11h.01M17 19h.01"], ["Stock", "stock", "m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M12 12 4 7.5"]]],
-		["Finance", [["Accounting", "accounting", "M5 3h14v18H5V3Zm3 5h8m-8 4h3m2 0h3m-8 4h3m2 0h3"], ["Assets", "assets", "M5 8h14v11H5V8Zm3 0V5h8v3"]]],
-		["Work", [["Projects", "projects", "M4 7h6l2 2h8v10H4V7Z"], ["HR & Payroll", "hr", "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8 0v6m3-3h-6"], ["Support", "support", "M4 13v-2a8 8 0 0 1 16 0v2M4 13h3v6H4v-6Zm16 0h-3v6h3v-6Z"]]],
-		["Insights", [["Reports", "query-report/General-Ledger", "M5 20V10m5 10V4m5 16v-7m5 7V7"], ["Role Permissions", "permission-manager", "M4 6h16v14H4V6Zm4-3h8v3H8V3Zm1 8h6m-6 4h4"], ["Permission Manager", "permission-manager-tool", "M12 3 20 6v5c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-3Zm-3 9 2 2 4-5"], ["Settings", "settings", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-5v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"]]],
+		["Operations", [["CRM", "crm", "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"], ["Selling", "selling", "M4 19V9m8 10V5m8 14v-7M3 19h18"], ["Buying", "buying", "M4 5h2l2 10h9l2-7H7m2 11h.01M17 19h.01"], ["Stock", "stock", "m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M12 12 4 7.5"], ["Manufacturing", "manufacturing", "M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6 7.7 7.7m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"], ["Quality", "quality", "M5 12l4 4L19 6"]]],
+		["Finance", [["Accounting", "accounting", "M5 3h14v18H5V3Zm3 5h8m-8 4h3m2 0h3m-8 4h3m2 0h3", [["Financial Statements", "financial-reports"], ["Receivables", "receivables"], ["Payables", "payables"]]], ["Assets", "assets", "M5 8h14v11H5V8Zm3 0V5h8v3"]]],
+		["Work", [["Projects", "projects", "M4 7h6l2 2h8v10H4V7Z"], ["Support", "support", "M4 13v-2a8 8 0 0 1 16 0v2M4 13h3v6H4v-6Zm16 0h-3v6h3v-6Z"], ["Contracting", "contracting", "M4 7h6l2 2h8v10H4V7Z"], ["Learning", "/lms", "M4 5h7a3 3 0 0 1 3 3v11H7a3 3 0 0 0-3 3V5Zm16 0h-5"]]],
+		["System", [["Website", "website", "M4 5h16v14H4V5Zm0 4h16M9 9v10"], ["Build", "build", "M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z"], ["Tools", "tools", "M14.7 6.3a4 4 0 0 0-5 5L4 17l3 3 5.7-5.7a4 4 0 0 0 5-5l-3 3-3-3 3-3Z"], ["Integrations", "integrations", "M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1.1M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"], ["Users", "users", "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"], ["Settings", "settings", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-5v2m0 14v2M3 12h2m14 0h2"]]],
+		["Insights", [["Reports", "query-report/General-Ledger", "M5 20V10m5 10V4m5 16v-7m5 7V7"], ["Role Permissions", "permission-manager", "M4 6h16v14H4V6Zm4-3h8v3H8V3Zm1 8h6m-6 4h4"], ["Permission Manager", "permission-manager-tool", "M12 3 20 6v5c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-3Zm-3 9 2 2 4-5"]]],
 	];
 
 	function easyaiNavIcon(path) {
 		return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
+	}
+
+	function easyaiNavHref(route) {
+		return route.startsWith("/") ? route : `/app/${route}`;
+	}
+
+	function renderEasyAiNavItem([label, route, icon, children = []]) {
+		const routeKey = route.replace(/^\//, "").toLowerCase();
+		const childMarkup = children.length
+			? `<div class="easyai-app-nav__children">${children.map(([childLabel, childRoute]) => `<a class="easyai-app-nav__link easyai-app-nav__child" href="${easyaiNavHref(childRoute)}" data-route="${childRoute.toLowerCase()}"><span class="easyai-app-nav__child-dot"></span><span class="easyai-app-nav__label">${childLabel}</span></a>`).join("")}</div>`
+			: "";
+		return `<div class="easyai-app-nav__entry"><a class="easyai-app-nav__link" href="${easyaiNavHref(route)}" data-route="${routeKey}"><span class="easyai-app-nav__icon">${easyaiNavIcon(icon)}</span><span class="easyai-app-nav__label">${label}</span></a>${childMarkup}</div>`;
 	}
 
 	function updateNavigationState() {
@@ -197,7 +210,7 @@
 			updateNavigationState();
 			return;
 		}
-		const sections = EASYAI_NAV.map(([title, items]) => `<section class="easyai-app-nav__section is-open"><button class="easyai-app-nav__section-toggle" type="button" aria-expanded="true"><span>${title}</span><svg viewBox="0 0 20 20"><path d="m6 8 4 4 4-4"/></svg></button><div class="easyai-app-nav__items">${items.map(([label, route, icon]) => `<a class="easyai-app-nav__link" href="/app/${route}" data-route="${route.toLowerCase()}"><span class="easyai-app-nav__icon">${easyaiNavIcon(icon)}</span><span class="easyai-app-nav__label">${label}</span></a>`).join("")}</div></section>`).join("");
+		const sections = EASYAI_NAV.map(([title, items]) => `<section class="easyai-app-nav__section is-open"><button class="easyai-app-nav__section-toggle" type="button" aria-expanded="true"><span>${title}</span><svg viewBox="0 0 20 20"><path d="m6 8 4 4 4-4"/></svg></button><div class="easyai-app-nav__items">${items.map(renderEasyAiNavItem).join("")}</div></section>`).join("");
 		document.body.insertAdjacentHTML("afterbegin", `<aside class="easyai-app-sidebar" aria-label="Primary navigation"><nav class="easyai-app-nav">${sections}</nav><footer><div class="easyai-sidebar-preferences"><button class="easyai-sidebar-preference" type="button" data-easyai-sidebar-language><span class="easyai-sidebar-preference__icon">${currentLanguage() === "ar" ? "EN" : "AR"}</span><span>Language</span></button><button class="easyai-sidebar-preference" type="button" data-easyai-sidebar-theme aria-expanded="false"><span class="easyai-sidebar-color-dot"></span><span>Theme color</span></button><div class="easyai-sidebar-palette" hidden>${COLORS.map((color) => `<button type="button" data-easyai-sidebar-color="${color}" title="${COLOR_LABELS[color]}"><span style="--swatch:${{ orange: "#ff6500", ocean: "#0ea5e9", forest: "#10b981", violet: "#8b5cf6" }[color]}"></span>${COLOR_LABELS[color]}</button>`).join("")}</div></div><button type="button" data-easyai-sidebar-collapse aria-label="Collapse navigation">${easyaiNavIcon("M5 7h14M5 12h10M5 17h14")}<span>Collapse menu</span></button></footer></aside><button class="easyai-sidebar-scrim" type="button" aria-label="Close navigation"></button>`);
 		document.querySelector("[data-easyai-sidebar-language]")?.remove();
 		document.body.classList.add("easyai-nav-mounted");

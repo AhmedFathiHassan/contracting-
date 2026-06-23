@@ -1794,6 +1794,50 @@ html.easyai-sidebar-collapsed {
 	gap: 3px;
 }
 
+.easyai-app-nav__entry {
+	display: grid;
+	gap: 2px;
+}
+
+.easyai-app-nav__children {
+	display: grid;
+	gap: 2px;
+	margin: 1px 4px 5px 22px;
+	padding-left: 12px;
+	border-left: 1px solid #e7e9ee;
+}
+
+.easyai-app-nav__child {
+	min-height: 32px;
+	gap: 9px;
+	padding: 4px 8px;
+	border-radius: 9px;
+	font-size: 11.5px;
+}
+
+.easyai-app-nav__child-dot {
+	width: 6px;
+	height: 6px;
+	flex: 0 0 6px;
+	border-radius: 50%;
+	background: #c9ced7;
+}
+
+.easyai-app-nav__child:hover .easyai-app-nav__child-dot,
+.easyai-app-nav__child.is-active .easyai-app-nav__child-dot {
+	background: var(--easyai-orange);
+	box-shadow: 0 0 0 4px rgb(var(--easyai-accent-rgb) / 10%);
+}
+
+[dir="rtl"] .easyai-app-nav__children {
+	margin-right: 22px;
+	margin-left: 4px;
+	padding-right: 12px;
+	padding-left: 0;
+	border-right: 1px solid #e7e9ee;
+	border-left: 0;
+}
+
 .easyai-app-nav__link {
 	display: flex;
 	align-items: center;
@@ -1894,6 +1938,10 @@ html.easyai-sidebar-collapsed {
 .easyai-sidebar-collapsed .easyai-app-nav__section-toggle svg,
 .easyai-sidebar-collapsed .easyai-app-nav__label,
 .easyai-sidebar-collapsed .easyai-app-sidebar footer span {
+	display: none;
+}
+
+.easyai-sidebar-collapsed .easyai-app-nav__children {
 	display: none;
 }
 
